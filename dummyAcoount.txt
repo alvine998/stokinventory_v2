@@ -1,0 +1,4 @@
+superadmin@stokinventory.test / password
+admin@stokinventory.test / password
+cs@stokinventory.test / password
+owner@stokinventory.test / password
