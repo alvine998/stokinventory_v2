@@ -15,6 +15,7 @@ use App\Http\Controllers\App\TeamAccessController;
 use App\Http\Controllers\App\OnboardingController;
 use App\Http\Controllers\App\OrderController;
 use App\Http\Controllers\App\SuperAdminController;
+use App\Http\Controllers\App\SupportController;
 use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login.store');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+
+    // Forgot / Reset password
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+    Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
@@ -53,6 +60,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::middleware('auth')->group(function () {
     Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding.show');
     Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
+
+    // Support tickets (customer)
+    Route::prefix('support')->name('support.')->group(function () {
+        Route::get('/',                              [SupportController::class, 'index'])->name('index');
+        Route::post('/',                             [SupportController::class, 'store'])->name('store');
+        Route::get('/{room}',                        [SupportController::class, 'show'])->name('show');
+        Route::post('/{room}/reply',                 [SupportController::class, 'reply'])->name('reply');
+        Route::post('/{room}/close',                 [SupportController::class, 'close'])->name('close');
+        Route::post('/{room}/reopen',                [SupportController::class, 'reopen'])->name('reopen');
+    });
 
     Route::prefix('docs')->name('docs.')->group(function () {
         Route::get('/',                [DocsController::class, 'index'])->name('index');
@@ -315,6 +332,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/support-rooms', [SuperAdminController::class, 'supportRooms'])->name('support-rooms');
         Route::post('/support-rooms', [SuperAdminController::class, 'storeSupportRoom'])->middleware('platform:super_admin,platform_admin')->name('support-rooms.store');
         Route::post('/support-rooms/{room}/reply', [SuperAdminController::class, 'replySupportRoom'])->name('support-rooms.reply');
+        Route::post('/support-rooms/{room}/close', [SuperAdminController::class, 'closeSupportRoom'])->name('support-rooms.close');
+        Route::post('/support-rooms/{room}/reopen', [SuperAdminController::class, 'reopenSupportRoom'])->name('support-rooms.reopen');
         Route::get('/commerce', [SuperAdminController::class, 'commerce'])->middleware('platform:super_admin,platform_admin')->name('commerce');
         Route::post('/packages', [SuperAdminController::class, 'storePackage'])->middleware('platform:super_admin,platform_admin')->name('packages.store');
         Route::patch('/packages/{package}', [SuperAdminController::class, 'updatePackage'])->middleware('platform:super_admin,platform_admin')->name('packages.update');

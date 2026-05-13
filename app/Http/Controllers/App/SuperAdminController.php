@@ -221,6 +221,20 @@ class SuperAdminController extends Controller
         return back()->with('status', __('messages.saved'));
     }
 
+    public function closeSupportRoom(SupportRoom $room)
+    {
+        $room->update(['status' => 'closed']);
+
+        return back()->with('status', __('messages.ticket_closed'));
+    }
+
+    public function reopenSupportRoom(SupportRoom $room)
+    {
+        $room->update(['status' => 'open']);
+
+        return back()->with('status', __('messages.ticket_reopened'));
+    }
+
     public function storePackage(Request $request)
     {
         $data = $request->validate([

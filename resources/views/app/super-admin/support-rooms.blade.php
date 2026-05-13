@@ -45,6 +45,25 @@
                 <input name="message" placeholder="{{ __('messages.reply_message') }}" required>
                 <button class="primary-button"><i class="fa-solid fa-reply"></i> {{ __('messages.reply') }}</button>
             </form>
+
+            {{-- Close / Reopen --}}
+            <div style="margin-top:10px;display:flex;justify-content:flex-end;gap:8px">
+                @if ($room->status === 'open')
+                    <form method="POST" action="{{ route('super-admin.support-rooms.close', $room) }}">
+                        @csrf
+                        <button class="secondary-button" style="font-size:12px;padding:5px 12px">
+                            <i class="fa-solid fa-lock"></i> {{ __('messages.close_ticket') }}
+                        </button>
+                    </form>
+                @else
+                    <form method="POST" action="{{ route('super-admin.support-rooms.reopen', $room) }}">
+                        @csrf
+                        <button class="primary-button" style="font-size:12px;padding:5px 12px">
+                            <i class="fa-solid fa-lock-open"></i> {{ __('messages.reopen_ticket') }}
+                        </button>
+                    </form>
+                @endif
+            </div>
         </article>
         @empty
             <p class="empty-cell">{{ __('messages.no_support_rooms') }}</p>

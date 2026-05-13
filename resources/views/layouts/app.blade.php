@@ -251,6 +251,9 @@
 
             {{-- Help --}}
             <p class="nav-section-label">Help</p>
+            <a class="{{ request()->routeIs('support.*') ? 'active' : '' }}" href="{{ route('support.index') }}">
+                <i class="fa-solid fa-headset"></i><span>{{ __('messages.support') }}</span>
+            </a>
             <a class="{{ request()->routeIs('docs.*') ? 'active' : '' }}" href="{{ route('docs.index') }}">
                 <i class="fa-solid fa-book-open"></i><span>Documentation</span>
             </a>
