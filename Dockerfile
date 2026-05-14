@@ -79,6 +79,9 @@ COPY . .
 # Copy pre-built Vite assets from Stage 1
 COPY --from=node-builder /app/public/build ./public/build
 
+# Keep a copy of public/ that won't be shadowed by the shared volume mount
+RUN cp -a /var/www/public /var/www/public-src
+
 # Ensure writable runtime directories exist before artisan runs
 RUN mkdir -p /var/www/storage/framework/cache \
              /var/www/storage/framework/sessions \
@@ -93,6 +96,11 @@ RUN composer dump-autoload --optimize --no-dev
 # Lock down ownership
 RUN chown -R www-data:www-data /var/www
 
+# Entrypoint — syncs public/ into the shared nginx volume on first start
+COPY docker/app/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE 9000
 
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["php-fpm"]
