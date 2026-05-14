@@ -1,0 +1,9 @@
+# 1. Copy and fill in secrets
+cp .env.example .env
+
+# 2. Build and start everything
+docker compose up -d --build
+
+# 3. First-time setup
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
