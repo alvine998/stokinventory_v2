@@ -49,7 +49,7 @@ services:
       FILESYSTEM_DISK: local
     volumes:
       # Environment file (must exist on the host — copy .env.example and fill values)
-      - ./.env:/var/www/.env:ro
+      - ./.env:/var/www/.env
       # Persist uploaded files and generated reports
       - storage_data:/var/www/storage/app
       # Persist logs across deployments
