@@ -79,13 +79,19 @@ COPY . .
 # Copy pre-built Vite assets from Stage 1
 COPY --from=node-builder /app/public/build ./public/build
 
+# Ensure writable runtime directories exist before artisan runs
+RUN mkdir -p /var/www/storage/framework/cache \
+             /var/www/storage/framework/sessions \
+             /var/www/storage/framework/views \
+             /var/www/storage/logs \
+             /var/www/bootstrap/cache \
+    && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
 # Finalise Composer autoloader with full source available
 RUN composer dump-autoload --optimize --no-dev
 
-# Storage / cache directories must be writable by www-data (uid 82 on Alpine fpm image)
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage \
-    && chmod -R 755 /var/www/bootstrap/cache
+# Lock down ownership
+RUN chown -R www-data:www-data /var/www
 
 EXPOSE 9000
 
