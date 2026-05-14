@@ -285,7 +285,12 @@ textarea { min-height: 120px; resize: vertical; }
 .nav-list a { display: flex; align-items: center; gap: 12px; min-height: 42px; padding: 10px 12px; border-radius: 8px; color: #c6dce4; }
 .nav-list a.active, .nav-list a:hover { background: rgba(87, 208, 189, .14); color: white; }
 .nav-list i { width: 20px; text-align: center; }
-.nav-section-label { margin: 14px 0 4px 12px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(198,220,228,.45); }
+.nav-section-label { display: flex; align-items: center; justify-content: space-between; width: 100%; margin: 14px 0 4px; padding: 0 12px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: rgba(198,220,228,.45); background: none; border: none; cursor: pointer; text-align: left; }
+.nav-section-label:hover { color: rgba(198,220,228,.7); }
+.nav-chevron { font-size: 9px; flex-shrink: 0; transition: transform .25s ease; }
+.nav-toggle.collapsed .nav-chevron { transform: rotate(-90deg); }
+.nav-section-body { overflow: hidden; max-height: 2000px; transition: max-height .35s ease; }
+.nav-section-body.collapsed { max-height: 0; transition: max-height .2s ease; }
 /* Collapsible nav group (Master Data) */
 .nav-group { border: none; }
 .nav-group summary { display: flex; align-items: center; gap: 12px; min-height: 42px; padding: 10px 12px; border-radius: 8px; color: #c6dce4; cursor: pointer; list-style: none; user-select: none; }
