@@ -24,6 +24,9 @@ RUN apk add --no-cache \
         bash \
         git \
         curl \
+        autoconf \
+        g++ \
+        make \
         libpng-dev \
         libjpeg-turbo-dev \
         libwebp-dev \
