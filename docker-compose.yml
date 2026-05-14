@@ -48,6 +48,8 @@ services:
       MAIL_FROM_NAME: "${APP_NAME:-StokinventoryV2}"
       FILESYSTEM_DISK: local
     volumes:
+      # Environment file (must exist on the host — copy .env.example and fill values)
+      - ./.env:/var/www/.env:ro
       # Persist uploaded files and generated reports
       - storage_data:/var/www/storage/app
       # Persist logs across deployments
