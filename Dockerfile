@@ -17,7 +17,7 @@ RUN npm run build
 # ============================================================
 # Stage 2: PHP-FPM application image
 # ============================================================
-FROM php:8.2-fpm-alpine AS app
+FROM php:8.4-fpm-alpine AS app
 
 # Install system-level dependencies
 RUN apk add --no-cache \
