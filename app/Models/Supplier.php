@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class Supplier extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'business_id', 'name', 'code', 'contact_person',
         'phone', 'email', 'address', 'is_active',

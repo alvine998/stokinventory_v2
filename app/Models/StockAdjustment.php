@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class StockAdjustment extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'business_id', 'product_id', 'warehouse_id', 'adjusted_by',
         'type', 'quantity', 'reason', 'reference_no', 'adjusted_at',

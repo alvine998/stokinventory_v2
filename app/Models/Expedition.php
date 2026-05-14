@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class Expedition extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'business_id', 'name', 'code', 'tracking_url_template', 'is_active',
     ];

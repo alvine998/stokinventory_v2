@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class ProductBarcode extends Model
 {
+    use LogsActivity;
     protected $fillable = ['business_id', 'product_id', 'barcode_type', 'value', 'is_primary'];
 
     protected $casts = ['is_primary' => 'boolean'];

@@ -1,0 +1,148 @@
+# ============================================================
+#  StokinventoryV2 — Docker Compose
+#  Services: app (PHP-FPM) · nginx · db (MySQL 8) · redis · mailpit
+#
+#  Quick start:
+#    cp .env.example .env          # fill in your values
+#    docker compose up -d --build
+#    docker compose exec app php artisan key:generate
+#    docker compose exec app php artisan migrate --seed
+#
+#  Web:      http://localhost:8080
+#  Mailpit:  http://localhost:8025
+#  MySQL:    localhost:3307  (to avoid conflict with local MySQL on 3306)
+# ============================================================
+
+services:
+
+  # ----------------------------------------------------------
+  #  PHP-FPM application
+  # ----------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app
+    container_name: stokinventory_app
+    restart: unless-stopped
+    working_dir: /var/www
+    environment:
+      APP_ENV: "${APP_ENV:-local}"
+      APP_KEY: "${APP_KEY}"
+      APP_URL: "${APP_URL:-http://localhost:8080}"
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: "${DB_DATABASE:-stokinventory_v2}"
+      DB_USERNAME: "${DB_USERNAME:-stokinventory}"
+      DB_PASSWORD: "${DB_PASSWORD:-stokinventory_secret}"
+      CACHE_DRIVER: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_MAILER: smtp
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      MAIL_FROM_ADDRESS: "${MAIL_FROM_ADDRESS:-hello@stokinventory.test}"
+      MAIL_FROM_NAME: "${APP_NAME:-StokinventoryV2}"
+      FILESYSTEM_DISK: local
+    volumes:
+      # Source code (dev: live edits; production: remove this and rely on image)
+      - .:/var/www
+      # Persist uploaded files and generated reports
+      - storage_data:/var/www/storage/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - stokinventory_net
+
+  # ----------------------------------------------------------
+  #  Nginx web server
+  # ----------------------------------------------------------
+  nginx:
+    image: nginx:1.26-alpine
+    container_name: stokinventory_nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+    networks:
+      - stokinventory_net
+
+  # ----------------------------------------------------------
+  #  MySQL 8
+  # ----------------------------------------------------------
+  db:
+    image: mysql:8.0
+    container_name: stokinventory_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: "${DB_DATABASE:-stokinventory_v2}"
+      MYSQL_USER: "${DB_USERNAME:-stokinventory}"
+      MYSQL_PASSWORD: "${DB_PASSWORD:-stokinventory_secret}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:-root_secret}"
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root_secret}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - stokinventory_net
+
+  # ----------------------------------------------------------
+  #  Redis 7 (cache, sessions, queues)
+  # ----------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: stokinventory_redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - stokinventory_net
+
+  # ----------------------------------------------------------
+  #  Mailpit (local SMTP + web UI for email testing)
+  #  Web UI: http://localhost:8025
+  # ----------------------------------------------------------
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: stokinventory_mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"   # Web UI
+      - "1025:1025"   # SMTP
+    networks:
+      - stokinventory_net
+
+# ============================================================
+#  Networks
+# ============================================================
+networks:
+  stokinventory_net:
+    driver: bridge
+
+# ============================================================
+#  Volumes
+# ============================================================
+volumes:
+  db_data:
+    driver: local
+  redis_data:
+    driver: local
+  storage_data:
+    driver: local

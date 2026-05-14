@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class BatchLot extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'business_id', 'product_id', 'batch_no', 'lot_no',
         'quantity', 'manufactured_at', 'expires_at', 'notes',

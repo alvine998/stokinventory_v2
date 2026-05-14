@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class Category extends Model
 {
+    use LogsActivity;
     protected $table = 'product_categories';
 
     protected $fillable = ['business_id', 'name', 'code', 'description', 'is_active'];

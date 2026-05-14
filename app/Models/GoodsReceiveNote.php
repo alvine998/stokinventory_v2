@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class GoodsReceiveNote extends Model
 {
+    use LogsActivity;
     protected $table = 'goods_receive_notes';
 
     protected $fillable = [

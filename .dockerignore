@@ -1,0 +1,41 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Environment — never bake secrets into the image; inject via docker-compose or secrets manager
+.env
+.env.*
+!.env.example
+
+# Node / front-end build inputs (Vite output is copied from node-builder stage)
+node_modules
+
+# Composer dependencies (installed fresh inside the image)
+vendor
+
+# Storage runtime data (mounted as a volume)
+storage/logs
+storage/framework/cache
+storage/framework/sessions
+storage/framework/views
+bootstrap/cache
+
+# Tests
+tests
+phpunit.xml
+.phpunit.result.cache
+
+# Documentation & editor files
+*.md
+README*
+.editorconfig
+.vscode
+.idea
+.DS_Store
+
+# Docker files themselves (not needed inside the image)
+Dockerfile
+.dockerignore
+docker-compose*.yml
+docker/

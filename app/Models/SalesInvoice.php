@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class SalesInvoice extends Model
 {
+    use LogsActivity;
     protected $table = 'sales_invoices';
 
     protected $fillable = [

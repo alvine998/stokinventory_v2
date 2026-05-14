@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class SalesOrder extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'business_id', 'so_no', 'customer_id', 'warehouse_id', 'price_level_id',
         'created_by', 'status', 'notes', 'ordered_at',

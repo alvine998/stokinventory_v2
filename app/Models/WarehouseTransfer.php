@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class WarehouseTransfer extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'business_id', 'product_id', 'from_warehouse_id', 'to_warehouse_id',
         'transferred_by', 'quantity', 'reference_no', 'notes', 'status', 'transferred_at',

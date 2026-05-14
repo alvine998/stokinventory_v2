@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class SupplierDebt extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'business_id', 'supplier_id', 'purchase_order_id',
         'invoice_no', 'amount', 'paid_amount', 'due_date', 'status', 'notes',

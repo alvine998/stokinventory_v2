@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class StockMovement extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     protected $fillable = ['business_id', 'product_id', 'warehouse_id', 'type', 'quantity', 'reference_no', 'notes', 'evidence_image_path', 'moved_at'];
 

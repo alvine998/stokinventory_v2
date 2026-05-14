@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\LogsActivity;
 
 class PurchaseRequest extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'business_id', 'pr_no', 'supplier_id', 'warehouse_id',
         'requested_by', 'status', 'notes', 'requested_at',
