@@ -9,6 +9,7 @@
 #    docker compose exec app php artisan migrate --seed
 #
 #  Web:      http://localhost:8080
+#  Adminer:  http://localhost:8888
 #  Mailpit:  http://localhost:8025
 #  MySQL:    localhost:3307  (to avoid conflict with local MySQL on 3306)
 # ============================================================
@@ -116,6 +117,21 @@ services:
       - "6380:6379"
     volumes:
       - redis_data:/data
+    networks:
+      - stokinventory_net
+
+  # ----------------------------------------------------------
+  #  Adminer — lightweight DB web UI
+  #  Web UI: http://localhost:8888
+  # ----------------------------------------------------------
+  adminer:
+    image: adminer:latest
+    container_name: stokinventory_adminer
+    restart: unless-stopped
+    ports:
+      - "8888:8080"
+    depends_on:
+      - db
     networks:
       - stokinventory_net
 
