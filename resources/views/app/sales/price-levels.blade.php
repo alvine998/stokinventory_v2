@@ -9,9 +9,13 @@
             <p class="eyebrow">{{ __('messages.nav_sales') }}</p>
             <h2><i class="fa-solid fa-tags"></i> {{ __('messages.price_levels') }}</h2>
         </div>
-        <a href="#modal-add-pl" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_price_level') }}</a>
-        <a href="{{ route('sales.price-levels.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
-        <a href="#modal-import-price-levels" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+        <div class="head-actions">
+            <div class="btn-group">
+                <a href="{{ route('sales.price-levels.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+                <a href="#modal-import-price-levels" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+            </div>
+            <a href="#modal-add-pl" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_price_level') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')

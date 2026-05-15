@@ -7,7 +7,9 @@
             <p class="eyebrow">{{ __('messages.platform_control') }}</p>
             <h2><i class="fa-solid fa-file-lines"></i> {{ __('messages.cms_management') }}</h2>
         </div>
-        <a href="#modal-add-cms" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_new') }}</a>
+        <div class="head-actions">
+            <a href="#modal-add-cms" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_new') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')

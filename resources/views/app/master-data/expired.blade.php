@@ -10,10 +10,12 @@
             <p class="eyebrow">{{ __('messages.master_data') }}</p>
             <h2><i class="fa-solid fa-triangle-exclamation" style="color:var(--rose)"></i> {{ __('messages.already_expired') }}</h2>
         </div>
-        <a href="{{ route('master-data.batches') }}" class="secondary-button">
-            <i class="fa-solid fa-layer-group"></i> {{ __('messages.batch_lots') }}
-        </a>
-        <a href="{{ route('master-data.expired.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <div class="head-actions">
+            <div class="btn-group">
+                <a href="{{ route('master-data.batches') }}" class="secondary-button">
+                <a href="{{ route('master-data.expired.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+            </div>
+        </div>
     </div>
 
     <div class="table-wrap">

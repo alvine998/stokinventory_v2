@@ -8,7 +8,9 @@
             <h2><i class="fa-solid fa-headset"></i> {{ __('messages.support_rooms') }}</h2>
         </div>
         @if (auth()->user()->isPlatformStaff(['super_admin', 'platform_admin']))
-            <a href="#modal-open-room" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.open_room') }}</a>
+            <div class="head-actions">
+                <a href="#modal-open-room" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.open_room') }}</a>
+            </div>
         @endif
     </div>
 

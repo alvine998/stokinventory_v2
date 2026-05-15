@@ -9,9 +9,13 @@
             <p class="eyebrow">{{ __('messages.nav_finance') }}</p>
             <h2><i class="fa-solid fa-percent"></i> {{ __('messages.tax_ppn') }}</h2>
         </div>
-        <a href="#modal-add-tax" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_tax') }}</a>
-        <a href="{{ route('finance.tax.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
-        <a href="#modal-import-tax" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+        <div class="head-actions">
+            <div class="btn-group">
+                <a href="{{ route('finance.tax.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+                <a href="#modal-import-tax" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+            </div>
+            <a href="#modal-add-tax" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_tax') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')

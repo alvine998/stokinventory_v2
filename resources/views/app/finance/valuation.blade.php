@@ -9,7 +9,9 @@
             <p class="eyebrow">{{ __('messages.nav_finance') }}</p>
             <h2><i class="fa-solid fa-scale-balanced"></i> {{ __('messages.inventory_valuation') }}</h2>
         </div>
-        <a href="{{ route('finance.valuation.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <div class="head-actions">
+            <a href="{{ route('finance.valuation.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        </div>
     </div>
 
     {{-- Summary --}}

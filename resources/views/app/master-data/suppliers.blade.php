@@ -9,9 +9,13 @@
             <p class="eyebrow">{{ __('messages.master_data') }}</p>
             <h2><i class="fa-solid fa-truck"></i> {{ __('messages.suppliers') }}</h2>
         </div>
-        <a href="#modal-add-supplier" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_supplier') }}</a>
-        <a href="{{ route('master-data.suppliers.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
-        <a href="#modal-import-suppliers" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+        <div class="head-actions">
+            <div class="btn-group">
+                <a href="{{ route('master-data.suppliers.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+                <a href="#modal-import-suppliers" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+            </div>
+            <a href="#modal-add-supplier" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_supplier') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')

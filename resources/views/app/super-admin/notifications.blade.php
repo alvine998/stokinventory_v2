@@ -7,7 +7,9 @@
             <p class="eyebrow">{{ __('messages.platform_control') }}</p>
             <h2><i class="fa-solid fa-bell"></i> {{ __('messages.notification_management') }}</h2>
         </div>
-        <a href="#modal-add-notification" class="primary-button"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.send_notification') }}</a>
+        <div class="head-actions">
+            <a href="#modal-add-notification" class="primary-button"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.send_notification') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')

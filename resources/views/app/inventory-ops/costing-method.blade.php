@@ -9,8 +9,12 @@
             <p class="eyebrow">{{ __('messages.nav_inventory') }}</p>
             <h2><i class="fa-solid fa-calculator"></i> {{ __('messages.costing_method') }}</h2>
         </div>
-        <a href="{{ route('inventory.costing-method.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
-        <a href="#modal-import-costing-method" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+        <div class="head-actions">
+            <div class="btn-group">
+                <a href="{{ route('inventory.costing-method.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+                <a href="#modal-import-costing-method" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+            </div>
+        </div>
     </div>
 
     @include('partials.errors')

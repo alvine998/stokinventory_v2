@@ -9,7 +9,9 @@
             <p class="eyebrow">{{ __('messages.nav_sales') }}</p>
             <h2><i class="fa-solid fa-location-dot"></i> {{ __('messages.shipment_tracking') }}</h2>
         </div>
-        <a href="{{ route('sales.shipment-tracking.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <div class="head-actions">
+            <a href="{{ route('sales.shipment-tracking.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')

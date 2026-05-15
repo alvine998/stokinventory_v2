@@ -7,7 +7,9 @@
             <p class="eyebrow">{{ __('messages.platform_control') }}</p>
             <h2><i class="fa-solid fa-quote-left"></i> {{ __('messages.manage_testimonials') }}</h2>
         </div>
-        <a class="secondary-button" href="{{ route('landing') }}" target="_blank">
+        <div class="head-actions">
+            <a class="secondary-button" href="{{ route('landing') }}" target="_blank">
+        </div>
             <i class="fa-solid fa-arrow-up-right-from-square"></i> {{ __('messages.view_landing') }}
         </a>
     </div>

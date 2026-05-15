@@ -555,6 +555,12 @@ th { color: #607381; font-size: 12px; text-transform: uppercase; letter-spacing:
 .chart-card { background: #f8fafb; border: 1px solid #e5eaef; border-radius: 12px; padding: 20px 22px; margin-bottom: 24px; }
 .chart-card h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin: 0 0 16px; display: flex; align-items: center; gap: 8px; }
 .export-group { display: flex; gap: 6px; }
+.head-actions { display: flex; align-items: center; gap: 10px; }
+.btn-group { display: flex; align-items: center; }
+.btn-group > * { border-radius: 0 !important; }
+.btn-group > *:first-child { border-radius: var(--radius, 8px) 0 0 var(--radius, 8px) !important; }
+.btn-group > *:last-child  { border-radius: 0 var(--radius, 8px) var(--radius, 8px) 0 !important; }
+.btn-group > * + * { border-left: 1px solid rgba(0,0,0,.12); }
 
 /* ── Documentation ─────────────────────────────────────────────────────────── */
 .docs-layout { display: grid; grid-template-columns: 220px 1fr; gap: 28px; align-items: start; }

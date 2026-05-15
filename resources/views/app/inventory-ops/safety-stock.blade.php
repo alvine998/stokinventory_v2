@@ -9,8 +9,12 @@
             <p class="eyebrow">{{ __('messages.nav_inventory') }}</p>
             <h2><i class="fa-solid fa-shield-halved"></i> {{ __('messages.safety_stock') }}</h2>
         </div>
-        <a href="{{ route('inventory.safety-stock.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
-        <a href="#modal-import-safety-stock" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+        <div class="head-actions">
+            <div class="btn-group">
+                <a href="{{ route('inventory.safety-stock.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+                <a href="#modal-import-safety-stock" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+            </div>
+        </div>
     </div>
 
     @include('partials.errors')

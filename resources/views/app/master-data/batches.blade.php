@@ -9,9 +9,13 @@
             <p class="eyebrow">{{ __('messages.master_data') }}</p>
             <h2><i class="fa-solid fa-layer-group"></i> {{ __('messages.batch_lots') }}</h2>
         </div>
-        <a href="#modal-add-batch" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_batch') }}</a>
-        <a href="{{ route('master-data.batches.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
-        <a href="#modal-import-batches" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+        <div class="head-actions">
+            <div class="btn-group">
+                <a href="{{ route('master-data.batches.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+                <a href="#modal-import-batches" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+            </div>
+            <a href="#modal-add-batch" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_batch') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')

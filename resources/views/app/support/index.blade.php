@@ -7,7 +7,9 @@
             <p class="eyebrow">{{ __('messages.support') }}</p>
             <h2><i class="fa-solid fa-headset"></i> {{ __('messages.my_tickets') }}</h2>
         </div>
-        <a href="#modal-new-ticket" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_ticket') }}</a>
+        <div class="head-actions">
+            <a href="#modal-new-ticket" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_ticket') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')

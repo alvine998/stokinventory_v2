@@ -9,8 +9,10 @@
             <p class="eyebrow">{{ __('messages.nav_purchasing') }}</p>
             <h2><i class="fa-solid fa-file-invoice"></i> {{ __('messages.purchase_order') }}</h2>
         </div>
-        <a href="#modal-add-po" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_po') }}</a>
-        <a href="{{ route('purchasing.po.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <div class="head-actions">
+            <a href="{{ route('purchasing.po.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+            <a href="#modal-add-po" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_po') }}</a>
+        </div>
     </div>
 
     @include('partials.errors')
