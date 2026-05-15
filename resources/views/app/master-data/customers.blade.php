@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-address-book"></i> {{ __('messages.inventory_customers') }}</h2>
         </div>
         <a href="#modal-add-customer" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_customer') }}</a>
+        <a href="{{ route('master-data.customers.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-customers" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -132,4 +134,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-customers',
+    'title'       => __('messages.import') . ' ' . __('messages.customers'),
+    'importRoute' => route('master-data.customers.import'),
+    'columns'     => 'name, code, contact_person, phone, email, address, is_active',
+])
 @endsection

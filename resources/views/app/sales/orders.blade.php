@@ -10,6 +10,7 @@
             <h2><i class="fa-solid fa-file-contract"></i> {{ __('messages.sales_order') }}</h2>
         </div>
         <a href="#modal-add-so" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_so') }}</a>
+        <a href="{{ route('sales.orders.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     @include('partials.errors')

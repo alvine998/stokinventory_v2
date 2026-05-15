@@ -9,6 +9,8 @@
             <p class="eyebrow">{{ __('messages.nav_inventory') }}</p>
             <h2><i class="fa-solid fa-rotate"></i> {{ __('messages.reorder_point') }}</h2>
         </div>
+        <a href="{{ route('inventory.reorder-point.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-reorder-point" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -64,4 +66,11 @@
         </table>
     </div>
 </section>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-reorder-point',
+    'title'       => __('messages.import') . ' Reorder Point',
+    'importRoute' => route('inventory.reorder-point.import'),
+    'columns'     => 'product, sku, reorder_point',
+])
 @endsection

@@ -9,6 +9,8 @@
             <p class="eyebrow">{{ __('messages.nav_inventory') }}</p>
             <h2><i class="fa-solid fa-calculator"></i> {{ __('messages.costing_method') }}</h2>
         </div>
+        <a href="{{ route('inventory.costing-method.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-costing-method" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -74,4 +76,11 @@
         </table>
     </div>
 </section>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-costing-method',
+    'title'       => __('messages.import') . ' Costing Method',
+    'importRoute' => route('inventory.costing-method.import'),
+    'columns'     => 'product, sku, costing_method (fifo/fefo/average)',
+])
 @endsection

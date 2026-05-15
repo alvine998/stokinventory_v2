@@ -10,6 +10,7 @@
             <h2><i class="fa-solid fa-triangle-exclamation"></i> {{ __('messages.min_stock_alert') }}</h2>
         </div>
         <span style="font-size:13px;color:#888">{{ $products->count() }} {{ __('messages.products_below_min') }}</span>
+        <a href="{{ route('inventory.min-stock.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     <div class="table-wrap">

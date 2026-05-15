@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-barcode"></i> {{ __('messages.serial_number_tracking') }}</h2>
         </div>
         <a href="#modal-add-serial" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_serial') }}</a>
+        <a href="{{ route('inventory.serial-numbers.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-serial-numbers" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -179,4 +181,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-serial-numbers',
+    'title'       => __('messages.import') . ' Serial Numbers',
+    'importRoute' => route('inventory.serial-numbers.import'),
+    'columns'     => 'product, sku, warehouse, serial_no, status, notes',
+])
 @endsection

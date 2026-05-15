@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-tag"></i> {{ __('messages.categories') }}</h2>
         </div>
         <a href="#modal-add-category" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_category') }}</a>
+        <a href="{{ route('master-data.categories.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-categories" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -106,4 +108,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-categories',
+    'title'       => __('messages.import') . ' ' . __('messages.categories'),
+    'importRoute' => route('master-data.categories.import'),
+    'columns'     => 'name, code, description, is_active',
+])
 @endsection

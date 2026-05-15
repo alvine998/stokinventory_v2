@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-tags"></i> {{ __('messages.price_levels') }}</h2>
         </div>
         <a href="#modal-add-pl" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_price_level') }}</a>
+        <a href="{{ route('sales.price-levels.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-price-levels" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -140,4 +142,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-price-levels',
+    'title'       => __('messages.import') . ' Price Levels',
+    'importRoute' => route('sales.price-levels.import'),
+    'columns'     => 'name, description, discount_percent, is_default, is_active',
+])
 @endsection

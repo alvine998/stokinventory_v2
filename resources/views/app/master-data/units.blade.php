@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-ruler"></i> {{ __('messages.units') }}</h2>
         </div>
         <a href="#modal-add-unit" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_unit') }}</a>
+        <a href="{{ route('master-data.units.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-units" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -106,4 +108,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-units',
+    'title'       => __('messages.import') . ' ' . __('messages.units'),
+    'importRoute' => route('master-data.units.import'),
+    'columns'     => 'name, symbol, description, is_active',
+])
 @endsection

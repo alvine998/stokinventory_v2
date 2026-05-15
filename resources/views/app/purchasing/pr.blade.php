@@ -10,6 +10,7 @@
             <h2><i class="fa-solid fa-file-pen"></i> {{ __('messages.purchase_request') }}</h2>
         </div>
         <a href="#modal-add-pr" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_pr') }}</a>
+        <a href="{{ route('purchasing.pr.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     @include('partials.errors')

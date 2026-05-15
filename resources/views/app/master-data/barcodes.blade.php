@@ -10,6 +10,7 @@
             <h2><i class="fa-solid fa-barcode"></i> {{ __('messages.barcodes') }}</h2>
         </div>
         <a href="#modal-add-barcode" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_barcode') }}</a>
+        <a href="{{ route('master-data.barcodes.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     @include('partials.errors')

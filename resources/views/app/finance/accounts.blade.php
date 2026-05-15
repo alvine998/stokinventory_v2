@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-sitemap"></i> {{ __('messages.chart_of_accounts') }}</h2>
         </div>
         <a href="#modal-add-account" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_account') }}</a>
+        <a href="{{ route('finance.accounts.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-accounts" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -133,4 +135,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-accounts',
+    'title'       => __('messages.import') . ' Accounts',
+    'importRoute' => route('finance.accounts.import'),
+    'columns'     => 'code, name, type (asset/liability/equity/revenue/cogs/expense), is_active',
+])
 @endsection

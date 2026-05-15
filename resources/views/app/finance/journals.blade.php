@@ -10,6 +10,7 @@
             <h2><i class="fa-solid fa-book-open"></i> {{ __('messages.journal_auto') }}</h2>
         </div>
         <a href="#modal-add-journal" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_journal') }}</a>
+        <a href="{{ route('finance.journals.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     @include('partials.errors')

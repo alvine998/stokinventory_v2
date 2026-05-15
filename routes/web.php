@@ -111,6 +111,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/products', [InventoryController::class, 'storeProduct'])->middleware('permission:products.manage')->name('products.store');
     Route::get('/products/{product}/edit', [InventoryController::class, 'editProduct'])->middleware('permission:products.manage')->name('products.edit');
     Route::put('/products/{product}', [InventoryController::class, 'updateProduct'])->middleware('permission:products.manage')->name('products.update');
+    Route::get('/products/export', [InventoryController::class, 'exportProducts'])->middleware('permission:products.manage')->name('products.export');
+    Route::post('/products/import', [InventoryController::class, 'importProducts'])->middleware('permission:products.manage')->name('products.import');
     Route::get('/stock-movements', [InventoryController::class, 'stockMovements'])->middleware('permission:stock.manage')->name('stock-movements.index');
     Route::post('/stock-movements', [InventoryController::class, 'storeStockMovement'])->middleware('permission:stock.manage')->name('stock-movements.store');
     Route::put('/stock-movements/{stockMovement}', [InventoryController::class, 'updateStockMovement'])->middleware('permission:stock.manage')->name('stock-movements.update');
@@ -126,69 +128,97 @@ Route::middleware('auth')->group(function () {
         Route::post('/categories', [MasterDataController::class, 'storeCategory'])->name('categories.store');
         Route::patch('/categories/{category}', [MasterDataController::class, 'updateCategory'])->name('categories.update');
         Route::delete('/categories/{category}', [MasterDataController::class, 'destroyCategory'])->name('categories.destroy');
+        Route::get('/categories/export', [MasterDataController::class, 'exportCategories'])->name('categories.export');
+        Route::post('/categories/import', [MasterDataController::class, 'importCategories'])->name('categories.import');
 
         Route::get('/brands', [MasterDataController::class, 'brands'])->name('brands');
         Route::post('/brands', [MasterDataController::class, 'storeBrand'])->name('brands.store');
         Route::patch('/brands/{brand}', [MasterDataController::class, 'updateBrand'])->name('brands.update');
         Route::delete('/brands/{brand}', [MasterDataController::class, 'destroyBrand'])->name('brands.destroy');
+        Route::get('/brands/export', [MasterDataController::class, 'exportBrands'])->name('brands.export');
+        Route::post('/brands/import', [MasterDataController::class, 'importBrands'])->name('brands.import');
 
         Route::get('/suppliers', [MasterDataController::class, 'suppliers'])->name('suppliers');
         Route::post('/suppliers', [MasterDataController::class, 'storeSupplier'])->name('suppliers.store');
         Route::patch('/suppliers/{supplier}', [MasterDataController::class, 'updateSupplier'])->name('suppliers.update');
         Route::delete('/suppliers/{supplier}', [MasterDataController::class, 'destroySupplier'])->name('suppliers.destroy');
+        Route::get('/suppliers/export', [MasterDataController::class, 'exportSuppliers'])->name('suppliers.export');
+        Route::post('/suppliers/import', [MasterDataController::class, 'importSuppliers'])->name('suppliers.import');
 
         Route::get('/customers', [MasterDataController::class, 'inventoryCustomers'])->name('customers');
         Route::post('/customers', [MasterDataController::class, 'storeCustomer'])->name('customers.store');
         Route::patch('/customers/{customer}', [MasterDataController::class, 'updateCustomer'])->name('customers.update');
         Route::delete('/customers/{customer}', [MasterDataController::class, 'destroyCustomer'])->name('customers.destroy');
+        Route::get('/customers/export', [MasterDataController::class, 'exportCustomers'])->name('customers.export');
+        Route::post('/customers/import', [MasterDataController::class, 'importCustomers'])->name('customers.import');
 
         Route::get('/units', [MasterDataController::class, 'units'])->name('units');
         Route::post('/units', [MasterDataController::class, 'storeUnit'])->name('units.store');
         Route::patch('/units/{unit}', [MasterDataController::class, 'updateUnit'])->name('units.update');
         Route::delete('/units/{unit}', [MasterDataController::class, 'destroyUnit'])->name('units.destroy');
+        Route::get('/units/export', [MasterDataController::class, 'exportUnits'])->name('units.export');
+        Route::post('/units/import', [MasterDataController::class, 'importUnits'])->name('units.import');
 
         Route::get('/barcodes', [MasterDataController::class, 'barcodes'])->name('barcodes');
         Route::post('/barcodes', [MasterDataController::class, 'storeBarcode'])->name('barcodes.store');
         Route::patch('/barcodes/{productBarcode}', [MasterDataController::class, 'updateBarcode'])->name('barcodes.update');
         Route::delete('/barcodes/{productBarcode}', [MasterDataController::class, 'destroyBarcode'])->name('barcodes.destroy');
+        Route::get('/barcodes/export', [MasterDataController::class, 'exportBarcodes'])->name('barcodes.export');
 
         Route::get('/batches', [MasterDataController::class, 'batches'])->name('batches');
         Route::post('/batches', [MasterDataController::class, 'storeBatch'])->name('batches.store');
         Route::patch('/batches/{batchLot}', [MasterDataController::class, 'updateBatch'])->name('batches.update');
         Route::delete('/batches/{batchLot}', [MasterDataController::class, 'destroyBatch'])->name('batches.destroy');
+        Route::get('/batches/export', [MasterDataController::class, 'exportBatches'])->name('batches.export');
+        Route::post('/batches/import', [MasterDataController::class, 'importBatches'])->name('batches.import');
 
         Route::get('/expired', [MasterDataController::class, 'expired'])->name('expired');
+        Route::get('/expired/export', [MasterDataController::class, 'exportExpired'])->name('expired.export');
 
         Route::get('/bin-locations', [MasterDataController::class, 'binLocations'])->name('bin-locations');
         Route::post('/bin-locations', [MasterDataController::class, 'storeBinLocation'])->name('bin-locations.store');
         Route::patch('/bin-locations/{binLocation}', [MasterDataController::class, 'updateBinLocation'])->name('bin-locations.update');
         Route::delete('/bin-locations/{binLocation}', [MasterDataController::class, 'destroyBinLocation'])->name('bin-locations.destroy');
+        Route::get('/bin-locations/export', [MasterDataController::class, 'exportBinLocations'])->name('bin-locations.export');
+        Route::post('/bin-locations/import', [MasterDataController::class, 'importBinLocations'])->name('bin-locations.import');
     });
 
     Route::middleware('permission:inventory_ops.manage')->prefix('inventory')->name('inventory.')->group(function () {
         Route::get('/adjustments', [InventoryOpsController::class, 'adjustments'])->name('adjustments');
         Route::post('/adjustments', [InventoryOpsController::class, 'storeAdjustment'])->name('adjustments.store');
+        Route::get('/adjustments/export', [InventoryOpsController::class, 'exportAdjustments'])->name('adjustments.export');
 
         Route::get('/transfers', [InventoryOpsController::class, 'transfers'])->name('transfers');
         Route::post('/transfers', [InventoryOpsController::class, 'storeTransfer'])->name('transfers.store');
+        Route::get('/transfers/export', [InventoryOpsController::class, 'exportTransfers'])->name('transfers.export');
 
         Route::get('/history', [InventoryOpsController::class, 'history'])->name('history');
+        Route::get('/history/export', [InventoryOpsController::class, 'exportHistory'])->name('history.export');
 
         Route::get('/min-stock', [InventoryOpsController::class, 'minStockAlert'])->name('min-stock');
+        Route::get('/min-stock/export', [InventoryOpsController::class, 'exportMinStock'])->name('min-stock.export');
 
         Route::get('/reorder-point', [InventoryOpsController::class, 'reorderPoint'])->name('reorder-point');
         Route::patch('/reorder-point/{product}', [InventoryOpsController::class, 'updateReorderPoint'])->name('reorder-point.update');
+        Route::get('/reorder-point/export', [InventoryOpsController::class, 'exportReorderPoint'])->name('reorder-point.export');
+        Route::post('/reorder-point/import', [InventoryOpsController::class, 'importReorderPoint'])->name('reorder-point.import');
 
         Route::get('/safety-stock', [InventoryOpsController::class, 'safetyStock'])->name('safety-stock');
         Route::patch('/safety-stock/{product}', [InventoryOpsController::class, 'updateSafetyStock'])->name('safety-stock.update');
+        Route::get('/safety-stock/export', [InventoryOpsController::class, 'exportSafetyStock'])->name('safety-stock.export');
+        Route::post('/safety-stock/import', [InventoryOpsController::class, 'importSafetyStock'])->name('safety-stock.import');
 
         Route::get('/costing-method', [InventoryOpsController::class, 'costingMethod'])->name('costing-method');
         Route::patch('/costing-method/{product}', [InventoryOpsController::class, 'updateCostingMethod'])->name('costing-method.update');
+        Route::get('/costing-method/export', [InventoryOpsController::class, 'exportCostingMethod'])->name('costing-method.export');
+        Route::post('/costing-method/import', [InventoryOpsController::class, 'importCostingMethod'])->name('costing-method.import');
 
         Route::get('/serial-numbers', [InventoryOpsController::class, 'serialNumbers'])->name('serial-numbers');
         Route::post('/serial-numbers', [InventoryOpsController::class, 'storeSerialNumber'])->name('serial-numbers.store');
         Route::patch('/serial-numbers/{serialNumber}', [InventoryOpsController::class, 'updateSerialNumber'])->name('serial-numbers.update');
         Route::delete('/serial-numbers/{serialNumber}', [InventoryOpsController::class, 'destroySerialNumber'])->name('serial-numbers.destroy');
+        Route::get('/serial-numbers/export', [InventoryOpsController::class, 'exportSerialNumbers'])->name('serial-numbers.export');
+        Route::post('/serial-numbers/import', [InventoryOpsController::class, 'importSerialNumbers'])->name('serial-numbers.import');
     });
 
     Route::middleware('permission:purchasing.manage')->prefix('purchasing')->name('purchasing.')->group(function () {
@@ -196,10 +226,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/pr', [PurchasingController::class, 'storePr'])->name('pr.store');
         Route::patch('/pr/{purchaseRequest}/status', [PurchasingController::class, 'updatePrStatus'])->name('pr.status');
         Route::delete('/pr/{purchaseRequest}', [PurchasingController::class, 'destroyPr'])->name('pr.destroy');
+        Route::get('/pr/export', [PurchasingController::class, 'exportPr'])->name('pr.export');
 
         Route::get('/po', [PurchasingController::class, 'po'])->name('po');
         Route::post('/po', [PurchasingController::class, 'storePo'])->name('po.store');
         Route::delete('/po/{purchaseOrder}', [PurchasingController::class, 'destroyPo'])->name('po.destroy');
+        Route::get('/po/export', [PurchasingController::class, 'exportPo'])->name('po.export');
 
         Route::get('/po-approvals', [PurchasingController::class, 'poApprovals'])->name('po-approvals');
         Route::post('/po-approvals/{purchaseOrder}/approve', [PurchasingController::class, 'approvePo'])->name('po-approvals.approve');
@@ -207,15 +239,19 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/grn', [PurchasingController::class, 'grn'])->name('grn');
         Route::post('/grn', [PurchasingController::class, 'storeGrn'])->name('grn.store');
+        Route::get('/grn/export', [PurchasingController::class, 'exportGrn'])->name('grn.export');
 
         Route::get('/returns', [PurchasingController::class, 'purchaseReturns'])->name('returns');
         Route::post('/returns', [PurchasingController::class, 'storePurchaseReturn'])->name('returns.store');
+        Route::get('/returns/export', [PurchasingController::class, 'exportPurchaseReturns'])->name('returns.export');
 
         Route::get('/supplier-debts', [PurchasingController::class, 'supplierDebts'])->name('supplier-debts');
         Route::post('/supplier-debts', [PurchasingController::class, 'storeSupplierDebt'])->name('supplier-debts.store');
         Route::patch('/supplier-debts/{supplierDebt}', [PurchasingController::class, 'updateSupplierDebt'])->name('supplier-debts.update');
+        Route::get('/supplier-debts/export', [PurchasingController::class, 'exportSupplierDebts'])->name('supplier-debts.export');
 
         Route::get('/supplier-performance', [PurchasingController::class, 'supplierPerformance'])->name('supplier-performance');
+        Route::get('/supplier-performance/export', [PurchasingController::class, 'exportSupplierPerformance'])->name('supplier-performance.export');
     });
 
     Route::middleware('permission:sales.manage')->prefix('sales')->name('sales.')->group(function () {
@@ -223,32 +259,42 @@ Route::middleware('auth')->group(function () {
         Route::post('/orders', [SalesController::class, 'storeSalesOrder'])->name('orders.store');
         Route::patch('/orders/{salesOrder}/status', [SalesController::class, 'updateSoStatus'])->name('orders.status');
         Route::delete('/orders/{salesOrder}', [SalesController::class, 'destroySo'])->name('orders.destroy');
+        Route::get('/orders/export', [SalesController::class, 'exportSalesOrders'])->name('orders.export');
 
         Route::get('/delivery-orders', [SalesController::class, 'deliveryOrders'])->name('delivery-orders');
         Route::post('/delivery-orders', [SalesController::class, 'storeDo'])->name('delivery-orders.store');
         Route::patch('/delivery-orders/{deliveryOrder}/status', [SalesController::class, 'updateDoStatus'])->name('delivery-orders.status');
+        Route::get('/delivery-orders/export', [SalesController::class, 'exportDeliveryOrders'])->name('delivery-orders.export');
 
         Route::get('/invoices', [SalesController::class, 'salesInvoices'])->name('invoices');
         Route::post('/invoices', [SalesController::class, 'storeSalesInvoice'])->name('invoices.store');
         Route::patch('/invoices/{salesInvoice}', [SalesController::class, 'updateSalesInvoice'])->name('invoices.update');
+        Route::get('/invoices/export', [SalesController::class, 'exportInvoices'])->name('invoices.export');
 
         Route::get('/returns', [SalesController::class, 'salesReturns'])->name('returns');
         Route::post('/returns', [SalesController::class, 'storeSalesReturn'])->name('returns.store');
+        Route::get('/returns/export', [SalesController::class, 'exportSalesReturns'])->name('returns.export');
 
         Route::get('/shipment-tracking', [SalesController::class, 'shipmentTracking'])->name('shipment-tracking');
         Route::post('/shipment-tracking/{deliveryOrder}', [SalesController::class, 'storeTracking'])->name('shipment-tracking.store');
+        Route::get('/shipment-tracking/export', [SalesController::class, 'exportShipmentTracking'])->name('shipment-tracking.export');
 
         Route::get('/expeditions', [SalesController::class, 'expeditions'])->name('expeditions');
         Route::post('/expeditions', [SalesController::class, 'storeExpedition'])->name('expeditions.store');
         Route::patch('/expeditions/{expedition}', [SalesController::class, 'updateExpedition'])->name('expeditions.update');
         Route::delete('/expeditions/{expedition}', [SalesController::class, 'destroyExpedition'])->name('expeditions.destroy');
+        Route::get('/expeditions/export', [SalesController::class, 'exportExpeditions'])->name('expeditions.export');
+        Route::post('/expeditions/import', [SalesController::class, 'importExpeditions'])->name('expeditions.import');
 
         Route::get('/price-levels', [SalesController::class, 'priceLevels'])->name('price-levels');
         Route::post('/price-levels', [SalesController::class, 'storePriceLevel'])->name('price-levels.store');
         Route::patch('/price-levels/{priceLevel}', [SalesController::class, 'updatePriceLevel'])->name('price-levels.update');
         Route::delete('/price-levels/{priceLevel}', [SalesController::class, 'destroyPriceLevel'])->name('price-levels.destroy');
+        Route::get('/price-levels/export', [SalesController::class, 'exportPriceLevels'])->name('price-levels.export');
+        Route::post('/price-levels/import', [SalesController::class, 'importPriceLevels'])->name('price-levels.import');
 
         Route::get('/customer-outstanding', [SalesController::class, 'customerOutstanding'])->name('customer-outstanding');
+        Route::get('/customer-outstanding/export', [SalesController::class, 'exportCustomerOutstanding'])->name('customer-outstanding.export');
     });
 
     Route::middleware('permission:finance.manage')->prefix('finance')->name('finance.')->group(function () {
@@ -259,11 +305,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/journals', [FinanceController::class, 'journals'])->name('journals');
         Route::post('/journals', [FinanceController::class, 'storeJournal'])->name('journals.store');
         Route::delete('/journals/{journalEntry}', [FinanceController::class, 'destroyJournal'])->name('journals.destroy');
+        Route::get('/journals/export', [FinanceController::class, 'exportJournals'])->name('journals.export');
 
         Route::get('/accounts', [FinanceController::class, 'accounts'])->name('accounts');
         Route::post('/accounts', [FinanceController::class, 'storeAccount'])->name('accounts.store');
         Route::patch('/accounts/{chartOfAccount}', [FinanceController::class, 'updateAccount'])->name('accounts.update');
         Route::delete('/accounts/{chartOfAccount}', [FinanceController::class, 'destroyAccount'])->name('accounts.destroy');
+        Route::get('/accounts/export', [FinanceController::class, 'exportAccounts'])->name('accounts.export');
+        Route::post('/accounts/import', [FinanceController::class, 'importAccounts'])->name('accounts.import');
 
         Route::get('/integration', [FinanceController::class, 'integration'])->name('integration');
         Route::post('/integration', [FinanceController::class, 'saveIntegration'])->name('integration.save');
@@ -271,6 +320,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/cashflow', [FinanceController::class, 'cashflow'])->name('cashflow');
 
         Route::get('/valuation', [FinanceController::class, 'valuation'])->name('valuation');
+        Route::get('/valuation/export', [FinanceController::class, 'exportValuation'])->name('valuation.export');
 
         Route::get('/profit-loss', [FinanceController::class, 'profitLoss'])->name('profit-loss');
 
@@ -278,6 +328,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/tax', [FinanceController::class, 'storeTax'])->name('tax.store');
         Route::patch('/tax/{taxConfig}', [FinanceController::class, 'updateTax'])->name('tax.update');
         Route::delete('/tax/{taxConfig}', [FinanceController::class, 'destroyTax'])->name('tax.destroy');
+        Route::get('/tax/export', [FinanceController::class, 'exportTax'])->name('tax.export');
+        Route::post('/tax/import', [FinanceController::class, 'importTax'])->name('tax.import');
     });
 
     Route::middleware('permission:reporting.view')->prefix('reporting')->name('reporting.')->group(function () {

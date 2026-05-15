@@ -31,6 +31,10 @@
             @if (isset($pageCreateRoutes[$resource]))
                 <a class="primary-button" href="{{ route($pageCreateRoutes[$resource]) }}"><i class="fa-solid fa-plus"></i> {{ __('messages.add_new') }}</a>
             @endif
+            @if ($resource === 'products')
+                <a href="{{ route('products.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+                <a href="#modal-import-products" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
+            @endif
             @if (in_array($resource, $modalResources, true))
                 <a class="primary-button" href="#create-record-modal"><i class="fa-solid fa-plus"></i> {{ __('messages.add_new') }}</a>
             @endif
@@ -296,4 +300,13 @@
         @endforeach
     @endif
 </section>
+
+@if (($resource ?? '') === 'products')
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-products',
+    'title'       => __('messages.import') . ' ' . __('messages.products'),
+    'importRoute' => route('products.import'),
+    'columns'     => 'name, sku, category, unit, price, minimum_stock',
+])
+@endif
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Exports\ReportExport;
 use App\Models\GoodsReceiveNote;
 use App\Models\GrnItem;
 use App\Models\Product;
@@ -18,6 +19,7 @@ use App\Models\SupplierDebt;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
 class PurchasingController extends Controller
@@ -559,5 +561,63 @@ class PurchasingController extends Controller
         });
 
         return view('app.purchasing.supplier-performance', compact('stats'));
+    }
+
+    // ──────────────────────────────────────────────
+    // EXCEL EXPORT (all purchasing lists are transactional — export only)
+    // ──────────────────────────────────────────────
+
+    public function exportPr()
+    {
+        $rows = PurchaseRequest::where('business_id', $this->bid())
+            ->with(['supplier', 'requestedBy', 'items'])->latest('requested_at')->get()
+            ->map(fn ($r) => [$r->pr_no, $r->supplier?->name, $r->status, $r->items->sum('total_price'), $r->notes, $r->requested_at])->toArray();
+        return Excel::download(new ReportExport(['PR No', 'Supplier', 'Status', 'Total', 'Notes', 'Date'], $rows, 'Purchase Requests'), 'purchase-requests.xlsx');
+    }
+
+    public function exportPo()
+    {
+        $rows = PurchaseOrder::where('business_id', $this->bid())
+            ->with(['supplier', 'createdBy', 'items'])->latest('ordered_at')->get()
+            ->map(fn ($o) => [$o->po_no, $o->supplier?->name, $o->status, $o->items->sum('total_price'), $o->notes, $o->ordered_at])->toArray();
+        return Excel::download(new ReportExport(['PO No', 'Supplier', 'Status', 'Total', 'Notes', 'Date'], $rows, 'Purchase Orders'), 'purchase-orders.xlsx');
+    }
+
+    public function exportGrn()
+    {
+        $rows = GoodsReceiveNote::where('business_id', $this->bid())
+            ->with(['supplier', 'warehouse', 'receivedBy'])->latest('received_at')->get()
+            ->map(fn ($g) => [$g->grn_no, $g->supplier?->name, $g->warehouse?->name, $g->status, $g->receivedBy?->name, $g->received_at])->toArray();
+        return Excel::download(new ReportExport(['GRN No', 'Supplier', 'Warehouse', 'Status', 'Received By', 'Date'], $rows, 'GRN'), 'grn.xlsx');
+    }
+
+    public function exportPurchaseReturns()
+    {
+        $rows = PurchaseReturn::where('business_id', $this->bid())
+            ->with(['supplier', 'returnedBy'])->latest('returned_at')->get()
+            ->map(fn ($r) => [$r->return_no, $r->supplier?->name, $r->status, $r->reason, $r->returnedBy?->name, $r->returned_at])->toArray();
+        return Excel::download(new ReportExport(['Return No', 'Supplier', 'Status', 'Reason', 'Returned By', 'Date'], $rows, 'Purchase Returns'), 'purchase-returns.xlsx');
+    }
+
+    public function exportSupplierDebts()
+    {
+        $rows = SupplierDebt::where('business_id', $this->bid())
+            ->with(['supplier'])->latest()->get()
+            ->map(fn ($d) => [$d->supplier?->name, $d->amount, $d->paid_amount, $d->amount - $d->paid_amount, $d->status, $d->due_at])->toArray();
+        return Excel::download(new ReportExport(['Supplier', 'Amount', 'Paid', 'Balance', 'Status', 'Due Date'], $rows, 'Supplier Debts'), 'supplier-debts.xlsx');
+    }
+
+    public function exportSupplierPerformance()
+    {
+        $bid  = $this->bid();
+        $suppliers = Supplier::where('business_id', $bid)->where('is_active', true)->orderBy('name')->get();
+        $rows = $suppliers->map(function ($s) use ($bid) {
+            $totalPos    = PurchaseOrder::where('business_id', $bid)->where('supplier_id', $s->id)->count();
+            $completedPos = PurchaseOrder::where('business_id', $bid)->where('supplier_id', $s->id)->where('status', 'completed')->count();
+            $totalReceived = GrnItem::whereHas('grn', fn ($q) => $q->where('business_id', $bid)->where('supplier_id', $s->id))->sum('quantity');
+            $totalReturned = PurchaseReturnItem::whereHas('purchaseReturn', fn ($q) => $q->where('business_id', $bid)->where('supplier_id', $s->id))->sum('quantity');
+            return [$s->name, $totalPos, $completedPos, $totalPos > 0 ? round($completedPos / $totalPos * 100) . '%' : '-', $totalReceived, $totalReturned];
+        })->toArray();
+        return Excel::download(new ReportExport(['Supplier', 'Total POs', 'Completed POs', 'On-Time Rate', 'Total Received', 'Total Returned'], $rows, 'Supplier Performance'), 'supplier-performance.xlsx');
     }
 }

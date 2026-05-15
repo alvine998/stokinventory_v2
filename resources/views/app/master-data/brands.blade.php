@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-certificate"></i> {{ __('messages.brands') }}</h2>
         </div>
         <a href="#modal-add-brand" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_brand') }}</a>
+        <a href="{{ route('master-data.brands.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-brands" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -106,4 +108,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-brands',
+    'title'       => __('messages.import') . ' ' . __('messages.brands'),
+    'importRoute' => route('master-data.brands.import'),
+    'columns'     => 'name, code, description, is_active',
+])
 @endsection

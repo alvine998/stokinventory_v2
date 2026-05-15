@@ -10,6 +10,7 @@
             <h2><i class="fa-solid fa-file-invoice-dollar"></i> {{ __('messages.sales_invoice') }}</h2>
         </div>
         <a href="#modal-add-inv" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_invoice') }}</a>
+        <a href="{{ route('sales.invoices.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     @include('partials.errors')

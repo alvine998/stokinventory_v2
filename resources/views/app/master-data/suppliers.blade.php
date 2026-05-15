@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-truck"></i> {{ __('messages.suppliers') }}</h2>
         </div>
         <a href="#modal-add-supplier" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_supplier') }}</a>
+        <a href="{{ route('master-data.suppliers.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-suppliers" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -132,4 +134,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-suppliers',
+    'title'       => __('messages.import') . ' ' . __('messages.suppliers'),
+    'importRoute' => route('master-data.suppliers.import'),
+    'columns'     => 'name, code, contact_person, phone, email, address, is_active',
+])
 @endsection

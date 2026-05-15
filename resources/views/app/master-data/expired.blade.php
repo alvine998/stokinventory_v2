@@ -13,6 +13,7 @@
         <a href="{{ route('master-data.batches') }}" class="secondary-button">
             <i class="fa-solid fa-layer-group"></i> {{ __('messages.batch_lots') }}
         </a>
+        <a href="{{ route('master-data.expired.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     <div class="table-wrap">

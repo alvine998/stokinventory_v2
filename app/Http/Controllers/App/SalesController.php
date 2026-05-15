@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Exports\ReportExport;
+use App\Imports\GenericImport;
 use App\Models\Customer;
 use App\Models\DeliveryOrder;
 use App\Models\DeliveryOrderItem;
@@ -20,6 +22,7 @@ use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SalesController extends Controller
 {
@@ -653,5 +656,118 @@ class SalesController extends Controller
         })->filter(fn($r) => $r['total_invoiced'] > 0 || $r['total_orders'] > 0);
 
         return view('app.sales.customer-outstanding', compact('stats'));
+    }
+
+    // ──────────────────────────────────────────────
+    // EXCEL EXPORT / IMPORT
+    // ──────────────────────────────────────────────
+
+    // — Sales Orders (export only — transactional) —
+    public function exportSalesOrders()
+    {
+        $rows = SalesOrder::where('business_id', $this->bid())
+            ->with(['customer', 'items'])->latest('ordered_at')->get()
+            ->map(fn ($o) => [$o->order_no, $o->customer?->name, $o->status, $o->items->sum('subtotal'), $o->notes, $o->ordered_at])->toArray();
+        return Excel::download(new ReportExport(['Order No', 'Customer', 'Status', 'Total', 'Notes', 'Date'], $rows, 'Sales Orders'), 'sales-orders.xlsx');
+    }
+
+    // — Delivery Orders (export only — transactional) —
+    public function exportDeliveryOrders()
+    {
+        $rows = DeliveryOrder::where('business_id', $this->bid())
+            ->with(['salesOrder', 'customer', 'expedition'])->latest('shipped_at')->get()
+            ->map(fn ($d) => [$d->do_no, $d->salesOrder?->order_no, $d->customer?->name, $d->expedition?->name, $d->status, $d->shipped_at])->toArray();
+        return Excel::download(new ReportExport(['DO No', 'Order No', 'Customer', 'Expedition', 'Status', 'Date'], $rows, 'Delivery Orders'), 'delivery-orders.xlsx');
+    }
+
+    // — Invoices (export only — transactional) —
+    public function exportInvoices()
+    {
+        $rows = SalesInvoice::where('business_id', $this->bid())
+            ->with(['salesOrder', 'customer'])->latest('issued_at')->get()
+            ->map(fn ($i) => [$i->invoice_no, $i->customer?->name, $i->amount, $i->paid_amount, $i->status, $i->due_at, $i->issued_at])->toArray();
+        return Excel::download(new ReportExport(['Invoice No', 'Customer', 'Amount', 'Paid', 'Status', 'Due Date', 'Issued At'], $rows, 'Invoices'), 'invoices.xlsx');
+    }
+
+    // — Sales Returns (export only — transactional) —
+    public function exportSalesReturns()
+    {
+        $rows = SalesReturn::where('business_id', $this->bid())
+            ->with(['customer', 'returnedBy'])->latest('returned_at')->get()
+            ->map(fn ($r) => [$r->return_no, $r->customer?->name, $r->status, $r->reason, $r->returnedBy?->name, $r->returned_at])->toArray();
+        return Excel::download(new ReportExport(['Return No', 'Customer', 'Status', 'Reason', 'Returned By', 'Date'], $rows, 'Sales Returns'), 'sales-returns.xlsx');
+    }
+
+    // — Shipment Tracking (export only) —
+    public function exportShipmentTracking()
+    {
+        $rows = DeliveryOrder::where('business_id', $this->bid())
+            ->with(['customer', 'expedition', 'salesOrder'])->latest('shipped_at')->get()
+            ->map(fn ($d) => [$d->do_no, $d->customer?->name, $d->expedition?->name, $d->tracking_no ?? null, $d->status, $d->shipped_at])->toArray();
+        return Excel::download(new ReportExport(['DO No', 'Customer', 'Expedition', 'Tracking No', 'Status', 'Date'], $rows, 'Shipment Tracking'), 'shipment-tracking.xlsx');
+    }
+
+    // — Expeditions —
+    public function exportExpeditions()
+    {
+        $rows = Expedition::where('business_id', $this->bid())->orderBy('name')->get()
+            ->map(fn ($e) => [$e->name, $e->code, $e->tracking_url_template, $e->is_active ? 'Yes' : 'No'])->toArray();
+        return Excel::download(new ReportExport(['Name', 'Code', 'Tracking URL Template', 'Is Active'], $rows, 'Expeditions'), 'expeditions.xlsx');
+    }
+
+    public function importExpeditions(Request $request)
+    {
+        $request->validate(['file' => ['required', 'file', 'mimes:xlsx,xls,csv', 'max:5120']]);
+        $bid = $this->bid();
+        Excel::import(new GenericImport(function ($row) use ($bid) {
+            $name = trim($row['name'] ?? '');
+            if (!$name) return;
+            Expedition::updateOrCreate(
+                ['business_id' => $bid, 'name' => $name],
+                ['code' => $row['code'] ?? null, 'tracking_url_template' => $row['tracking_url_template'] ?? null,
+                 'is_active' => in_array(strtolower((string)($row['is_active'] ?? 'yes')), ['1', 'yes', 'true', 'ya'])]
+            );
+        }), $request->file('file'));
+        return back()->with('status', __('messages.saved'));
+    }
+
+    // — Price Levels —
+    public function exportPriceLevels()
+    {
+        $rows = PriceLevel::where('business_id', $this->bid())->orderBy('name')->get()
+            ->map(fn ($p) => [$p->name, $p->description, $p->discount_percent, $p->is_default ? 'Yes' : 'No', $p->is_active ? 'Yes' : 'No'])->toArray();
+        return Excel::download(new ReportExport(['Name', 'Description', 'Discount %', 'Is Default', 'Is Active'], $rows, 'Price Levels'), 'price-levels.xlsx');
+    }
+
+    public function importPriceLevels(Request $request)
+    {
+        $request->validate(['file' => ['required', 'file', 'mimes:xlsx,xls,csv', 'max:5120']]);
+        $bid = $this->bid();
+        Excel::import(new GenericImport(function ($row) use ($bid) {
+            $name = trim($row['name'] ?? '');
+            if (!$name) return;
+            PriceLevel::updateOrCreate(
+                ['business_id' => $bid, 'name' => $name],
+                ['description'      => $row['description'] ?? null,
+                 'discount_percent' => (float)($row['discount_percent'] ?? 0),
+                 'is_default' => in_array(strtolower((string)($row['is_default'] ?? 'no')), ['1', 'yes', 'true', 'ya']),
+                 'is_active'  => in_array(strtolower((string)($row['is_active']  ?? 'yes')), ['1', 'yes', 'true', 'ya'])]
+            );
+        }), $request->file('file'));
+        return back()->with('status', __('messages.saved'));
+    }
+
+    // — Customer Outstanding (export only — computed) —
+    public function exportCustomerOutstanding()
+    {
+        $bid       = $this->bid();
+        $customers = Customer::where('business_id', $bid)->where('is_active', true)->orderBy('name')->get();
+        $rows      = $customers->map(function ($c) use ($bid) {
+            $invoices    = SalesInvoice::where('business_id', $bid)->where('customer_id', $c->id);
+            $totalAmount = (clone $invoices)->sum('amount');
+            $totalPaid   = (clone $invoices)->sum('paid_amount');
+            return [$c->name, $c->phone, $totalAmount, $totalPaid, max(0, $totalAmount - $totalPaid)];
+        })->filter(fn ($r) => $r[2] > 0)->toArray();
+        return Excel::download(new ReportExport(['Customer', 'Phone', 'Total Invoiced', 'Total Paid', 'Outstanding'], $rows, 'Customer Outstanding'), 'customer-outstanding.xlsx');
     }
 }

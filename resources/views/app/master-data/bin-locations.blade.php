@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-location-dot"></i> {{ __('messages.bin_locations') }}</h2>
         </div>
         <a href="#modal-add-bin" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_bin_location') }}</a>
+        <a href="{{ route('master-data.bin-locations.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-bin-locations" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -154,4 +156,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-bin-locations',
+    'title'       => __('messages.import') . ' Bin Locations',
+    'importRoute' => route('master-data.bin-locations.import'),
+    'columns'     => 'warehouse, code, aisle, rack, level, bin, description, is_active',
+])
 @endsection

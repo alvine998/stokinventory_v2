@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-layer-group"></i> {{ __('messages.batch_lots') }}</h2>
         </div>
         <a href="#modal-add-batch" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.add_batch') }}</a>
+        <a href="{{ route('master-data.batches.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-batches" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -162,4 +164,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-batches',
+    'title'       => __('messages.import') . ' Batch / Lot',
+    'importRoute' => route('master-data.batches.import'),
+    'columns'     => 'product, batch_no, lot_no, quantity, manufactured_at, expires_at, notes',
+])
 @endsection

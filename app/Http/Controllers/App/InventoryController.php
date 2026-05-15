@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Exports\ReportExport;
+use App\Imports\GenericImport;
 use App\Models\Package;
 use App\Models\Product;
 use App\Models\Role;
@@ -13,6 +15,7 @@ use App\Models\User;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -596,5 +599,38 @@ class InventoryController extends Controller
         if ($product) {
             $product->increment('current_stock', ($type === 'in' ? $quantity : -$quantity) * $direction);
         }
+    }
+
+    // ──────────────────────────────────────────────
+    // PRODUCTS EXCEL EXPORT / IMPORT
+    // ──────────────────────────────────────────────
+
+    public function exportProducts()
+    {
+        $bid = Auth::user()->business_id;
+        $rows = Product::where('business_id', $bid)->orderBy('name')->get()
+            ->map(fn ($p) => [$p->name, $p->sku, $p->category, $p->unit, $p->price, $p->minimum_stock, $p->current_stock])->toArray();
+        return Excel::download(new ReportExport(['Name', 'SKU', 'Category', 'Unit', 'Price', 'Minimum Stock', 'Current Stock'], $rows, 'Products'), 'products.xlsx');
+    }
+
+    public function importProducts(Request $request)
+    {
+        $request->validate(['file' => ['required', 'file', 'mimes:xlsx,xls,csv', 'max:5120']]);
+        $bid = Auth::user()->business_id;
+        Excel::import(new GenericImport(function ($row) use ($bid) {
+            $name = trim($row['name'] ?? '');
+            if (!$name) return;
+            Product::updateOrCreate(
+                ['business_id' => $bid, 'name' => $name],
+                array_filter([
+                    'sku'           => $row['sku'] ?? null,
+                    'category'      => $row['category'] ?? null,
+                    'unit'          => $row['unit'] ?? 'pcs',
+                    'price'         => isset($row['price']) ? (float) $row['price'] : 0,
+                    'minimum_stock' => isset($row['minimum_stock']) ? (int) $row['minimum_stock'] : 0,
+                ], fn ($v) => $v !== null)
+            );
+        }), $request->file('file'));
+        return back()->with('status', __('messages.saved'));
     }
 }

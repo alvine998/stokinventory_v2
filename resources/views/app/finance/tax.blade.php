@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-percent"></i> {{ __('messages.tax_ppn') }}</h2>
         </div>
         <a href="#modal-add-tax" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_tax') }}</a>
+        <a href="{{ route('finance.tax.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-tax" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -166,4 +168,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-tax',
+    'title'       => __('messages.import') . ' Tax',
+    'importRoute' => route('finance.tax.import'),
+    'columns'     => 'name, code, rate_percent, tax_type (ppn/pph/other), is_inclusive, applies_to (sales/purchases/all), is_active',
+])
 @endsection

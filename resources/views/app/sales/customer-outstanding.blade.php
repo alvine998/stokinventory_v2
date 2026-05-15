@@ -9,6 +9,7 @@
             <p class="eyebrow">{{ __('messages.nav_sales') }}</p>
             <h2><i class="fa-solid fa-circle-exclamation"></i> {{ __('messages.customer_outstanding') }}</h2>
         </div>
+        <a href="{{ route('sales.customer-outstanding.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     <div class="table-wrap">

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Exports\ReportExport;
+use App\Imports\GenericImport;
 use App\Models\AccountingIntegration;
 use App\Models\ChartOfAccount;
 use App\Models\HppConfig;
@@ -16,6 +18,7 @@ use App\Models\TaxConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class FinanceController extends Controller
 {
@@ -397,5 +400,88 @@ class FinanceController extends Controller
         abort_if($taxConfig->business_id !== $this->bid(), 403);
         $taxConfig->delete();
         return back()->with('status', __('messages.deleted'));
+    }
+
+    // ──────────────────────────────────────────────
+    // EXCEL EXPORT / IMPORT
+    // ──────────────────────────────────────────────
+
+    // — Chart of Accounts —
+    public function exportAccounts()
+    {
+        $rows = ChartOfAccount::where('business_id', $this->bid())->orderBy('code')->get()
+            ->map(fn ($a) => [$a->code, $a->name, $a->type, $a->is_active ? 'Yes' : 'No'])->toArray();
+        return Excel::download(new ReportExport(['Code', 'Name', 'Type', 'Is Active'], $rows, 'Chart of Accounts'), 'accounts.xlsx');
+    }
+
+    public function importAccounts(Request $request)
+    {
+        $request->validate(['file' => ['required', 'file', 'mimes:xlsx,xls,csv', 'max:5120']]);
+        $bid = $this->bid();
+        $validTypes = ['asset', 'liability', 'equity', 'revenue', 'cogs', 'expense'];
+        Excel::import(new GenericImport(function ($row) use ($bid, $validTypes) {
+            $code = trim($row['code'] ?? '');
+            $name = trim($row['name'] ?? '');
+            $type = strtolower(trim($row['type'] ?? ''));
+            if (!$code || !$name || !in_array($type, $validTypes)) return;
+            ChartOfAccount::updateOrCreate(
+                ['business_id' => $bid, 'code' => $code],
+                ['name' => $name, 'type' => $type, 'is_system' => false,
+                 'is_active' => in_array(strtolower((string)($row['is_active'] ?? 'yes')), ['1', 'yes', 'true', 'ya'])]
+            );
+        }), $request->file('file'));
+        return back()->with('status', __('messages.saved'));
+    }
+
+    // — Journals (export only — complex double-entry) —
+    public function exportJournals()
+    {
+        $rows = JournalEntry::where('business_id', $this->bid())
+            ->with(['lines.account', 'creator'])->latest('entry_date')->get()
+            ->flatMap(fn ($j) => $j->lines->map(fn ($l) => [
+                $j->entry_no, $j->entry_date, $j->description, $j->creator?->name,
+                $l->account?->code, $l->account?->name, $l->debit, $l->credit, $l->notes,
+            ]))->toArray();
+        return Excel::download(new ReportExport(['Entry No', 'Date', 'Description', 'Created By', 'Account Code', 'Account Name', 'Debit', 'Credit', 'Notes'], $rows, 'Journal Entries'), 'journals.xlsx');
+    }
+
+    // — Tax —
+    public function exportTax()
+    {
+        $rows = TaxConfig::where('business_id', $this->bid())->orderBy('name')->get()
+            ->map(fn ($t) => [$t->name, $t->code, $t->rate_percent, $t->tax_type, $t->is_inclusive ? 'Yes' : 'No', $t->applies_to, $t->is_active ? 'Yes' : 'No'])->toArray();
+        return Excel::download(new ReportExport(['Name', 'Code', 'Rate %', 'Tax Type', 'Is Inclusive', 'Applies To', 'Is Active'], $rows, 'Tax'), 'tax.xlsx');
+    }
+
+    public function importTax(Request $request)
+    {
+        $request->validate(['file' => ['required', 'file', 'mimes:xlsx,xls,csv', 'max:5120']]);
+        $bid = $this->bid();
+        Excel::import(new GenericImport(function ($row) use ($bid) {
+            $name = trim($row['name'] ?? '');
+            $code = trim($row['code'] ?? '');
+            if (!$name || !$code) return;
+            $taxType  = strtolower(trim($row['tax_type'] ?? 'other'));
+            $appliesTo = strtolower(trim($row['applies_to'] ?? 'all'));
+            if (!in_array($taxType, ['ppn', 'pph', 'other'])) $taxType = 'other';
+            if (!in_array($appliesTo, ['sales', 'purchases', 'all'])) $appliesTo = 'all';
+            TaxConfig::updateOrCreate(
+                ['business_id' => $bid, 'code' => $code],
+                ['name' => $name, 'rate_percent' => (float)($row['rate_percent'] ?? 0),
+                 'tax_type' => $taxType,
+                 'is_inclusive' => in_array(strtolower((string)($row['is_inclusive'] ?? 'no')), ['1', 'yes', 'true', 'ya']),
+                 'applies_to' => $appliesTo,
+                 'is_active'  => in_array(strtolower((string)($row['is_active'] ?? 'yes')), ['1', 'yes', 'true', 'ya'])]
+            );
+        }), $request->file('file'));
+        return back()->with('status', __('messages.saved'));
+    }
+
+    // — Valuation (export only — computed) —
+    public function exportValuation()
+    {
+        $rows = Product::where('business_id', $this->bid())->orderBy('name')->get()
+            ->map(fn ($p) => [$p->name, $p->sku, $p->category, $p->current_stock, $p->cost_price, $p->current_stock * $p->cost_price])->toArray();
+        return Excel::download(new ReportExport(['Product', 'SKU', 'Category', 'Stock', 'Cost Price', 'Value'], $rows, 'Stock Valuation'), 'valuation.xlsx');
     }
 }

@@ -10,6 +10,8 @@
             <h2><i class="fa-solid fa-plane-departure"></i> {{ __('messages.expedition') }}</h2>
         </div>
         <a href="#modal-add-exp" class="primary-button"><i class="fa-solid fa-plus"></i> {{ __('messages.new_expedition') }}</a>
+        <a href="{{ route('sales.expeditions.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
+        <a href="#modal-import-expeditions" class="secondary-button"><i class="fa-solid fa-file-import"></i> {{ __('messages.import') }}</a>
     </div>
 
     @include('partials.errors')
@@ -126,4 +128,11 @@
         </form>
     </div>
 </div>
+
+@include('partials._xl-import-modal', [
+    'modalId'     => 'modal-import-expeditions',
+    'title'       => __('messages.import') . ' Expeditions',
+    'importRoute' => route('sales.expeditions.import'),
+    'columns'     => 'name, code, tracking_url_template, is_active',
+])
 @endsection

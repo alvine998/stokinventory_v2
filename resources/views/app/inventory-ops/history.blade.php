@@ -9,6 +9,7 @@
             <p class="eyebrow">{{ __('messages.nav_inventory') }}</p>
             <h2><i class="fa-solid fa-clock-rotate-left"></i> {{ __('messages.stock_history') }}</h2>
         </div>
+        <a href="{{ route('inventory.history.export') }}" class="secondary-button"><i class="fa-solid fa-file-excel"></i> {{ __('messages.export') }}</a>
     </div>
 
     {{-- Filters --}}
