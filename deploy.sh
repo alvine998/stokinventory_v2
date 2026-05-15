@@ -16,7 +16,7 @@ docker compose down
 docker compose up -d --build
 
 echo "▶ Waiting for app container to be ready..."
-sleep 5
+sleep 10
 
 echo "▶ Installing Composer dependencies..."
 docker compose exec -T "$APP_CONTAINER" composer install --no-dev --optimize-autoloader --no-interaction
