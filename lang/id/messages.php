@@ -919,5 +919,14 @@ return [
     'support_team'          => 'Tim Dukungan',
     'messages_count'        => 'Pesan',
     'created_at'            => 'Dibuat',
-    'view'                  => 'Lihat',
-];
+    'view'                  => 'Lihat',    // Kunci yang ditambahkan untuk tampilan team-access
+    'export'                => 'Ekspor',
+    'import'                => 'Impor',
+    'file'                  => 'File',
+    'import_excel_hint'     => 'Unggah file .xlsx / .xls / .csv. Kolom yang diperlukan: :columns',
+    'optional'              => 'Opsional',
+    'required'              => 'Wajib diisi',
+    'records'               => 'data',
+    'logins'                => 'Login',
+    'unique_ips'            => 'IP Unik',
+    'success'               => 'Berhasil',];

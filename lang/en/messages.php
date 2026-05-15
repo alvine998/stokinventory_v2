@@ -920,4 +920,15 @@ return [
     'messages_count'        => 'Messages',
     'created_at'            => 'Opened',
     'view'                  => 'View',
+    // Missing keys added for team-access views
+    'export'                => 'Export',
+    'import'                => 'Import',
+    'file'                  => 'File',
+    'import_excel_hint'     => 'Upload an .xlsx / .xls / .csv file. Required columns: :columns',
+    'optional'              => 'Optional',
+    'required'              => 'Required',
+    'records'               => 'records',
+    'logins'                => 'Logins',
+    'unique_ips'            => 'Unique IPs',
+    'success'               => 'Success',
 ];
