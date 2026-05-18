@@ -71,13 +71,13 @@
                             @csrf @method('PATCH')
                             <div class="form-grid two">
                                 <label><span class="label-cap">{{ __('messages.name') }} <span class="req">*</span></span>
-                                    <input type="text" name="name" value="{{ $pl->name }}" required>
+                                    <input type="text" name="name" value="{{ $pl->name }}" placeholder="{{ __('messages.name') }}" required>
                                 </label>
                                 <label><span class="label-cap">{{ __('messages.discount_percent') }}</span>
-                                    <input type="number" name="discount_percent" min="0" max="100" step="0.01" value="{{ $pl->discount_percent }}">
+                                    <input type="number" name="discount_percent" min="0" max="100" step="0.01" value="{{ $pl->discount_percent }}" placeholder="0">
                                 </label>
                                 <label style="grid-column:span 2"><span class="label-cap">{{ __('messages.description') }}</span>
-                                    <input type="text" name="description" value="{{ $pl->description }}">
+                                    <input type="text" name="description" value="{{ $pl->description }}" placeholder="{{ __('messages.description') }}">
                                 </label>
                                 <label><span class="label-cap">{{ __('messages.is_default') }}</span>
                                     <select name="is_default">
@@ -118,13 +118,13 @@
             @csrf
             <div class="form-grid two">
                 <label><span class="label-cap">{{ __('messages.name') }} <span class="req">*</span></span>
-                    <input type="text" name="name" required>
+                    <input type="text" name="name" placeholder="{{ __('messages.name') }}" required>
                 </label>
                 <label><span class="label-cap">{{ __('messages.discount_percent') }}</span>
-                    <input type="number" name="discount_percent" min="0" max="100" step="0.01" value="0">
+                    <input type="number" name="discount_percent" min="0" max="100" step="0.01" value="0" placeholder="0">
                 </label>
                 <label style="grid-column:span 2"><span class="label-cap">{{ __('messages.description') }}</span>
-                    <input type="text" name="description">
+                    <input type="text" name="description" placeholder="{{ __('messages.description') }}">
                 </label>
                 <label><span class="label-cap">{{ __('messages.is_default') }}</span>
                     <select name="is_default">

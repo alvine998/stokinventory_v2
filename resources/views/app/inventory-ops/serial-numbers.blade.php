@@ -92,7 +92,7 @@
                             @csrf @method('PATCH')
                             <div class="form-grid two">
                                 <label><span class="label-cap">{{ __('messages.serial_no') }} <span class="req">*</span></span>
-                                    <input name="serial_no" value="{{ $sn->serial_no }}" required>
+                                    <input name="serial_no" value="{{ $sn->serial_no }}" placeholder="{{ __('messages.serial_no') }}" required>
                                 </label>
                                 <label><span class="label-cap">{{ __('messages.product') }} <span class="req">*</span></span>
                                     <select name="product_id" required>
@@ -148,7 +148,7 @@
             @csrf
             <div class="form-grid two">
                 <label><span class="label-cap">{{ __('messages.serial_no') }} <span class="req">*</span></span>
-                    <input name="serial_no" required>
+                    <input name="serial_no" placeholder="{{ __('messages.serial_no') }}" required>
                 </label>
                 <label><span class="label-cap">{{ __('messages.product') }} <span class="req">*</span></span>
                     <select name="product_id" required>

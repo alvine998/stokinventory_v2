@@ -90,13 +90,13 @@
                     </select>
                 </label>
                 <label><span class="label-cap">{{ __('messages.quantity') }} <span class="req">*</span></span>
-                    <input type="number" name="quantity" min="1" required>
+                    <input type="number" name="quantity" min="1" placeholder="1" required>
                 </label>
                 <label><span class="label-cap">{{ __('messages.reason') }}</span>
-                    <input name="reason" maxlength="255">
+                    <input name="reason" maxlength="255" placeholder="{{ __('messages.reason') }}">
                 </label>
                 <label><span class="label-cap">{{ __('messages.reference_no') }}</span>
-                    <input name="reference_no" maxlength="100">
+                    <input name="reference_no" maxlength="100" placeholder="{{ __('messages.reference_no') }}">
                 </label>
                 <label><span class="label-cap">{{ __('messages.date') }}</span>
                     <input type="datetime-local" name="adjusted_at">

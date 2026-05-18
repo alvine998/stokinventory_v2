@@ -31,10 +31,10 @@
                 @csrf @method('PATCH')
                 <div class="form-grid two">
                     <label><span class="label-cap">{{ __('messages.title') }} <span class="req">*</span></span>
-                        <input name="title" value="{{ $page->title }}" required>
+                        <input name="title" value="{{ $page->title }}" placeholder="{{ __('messages.title') }}" required>
                     </label>
                     <label><span class="label-cap">{{ __('messages.section') }} <span class="req">*</span></span>
-                        <input name="section" value="{{ $page->section }}" required>
+                        <input name="section" value="{{ $page->section }}" placeholder="landing, about…" required>
                     </label>
                 </div>
                 <label>{{ __('messages.content') }}

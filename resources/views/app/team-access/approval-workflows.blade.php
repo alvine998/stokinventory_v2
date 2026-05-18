@@ -96,7 +96,7 @@
                                 <i class="fa-solid fa-pen-to-square"></i> {{ __('messages.edit') }}: {{ $wf->name }}
                             </p>
                             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-                                <label>{{ __('messages.name') }}<input type="text" name="name" value="{{ $wf->name }}" required></label>
+                                <label>{{ __('messages.name') }}<input type="text" name="name" value="{{ $wf->name }}" placeholder="{{ __('messages.name') }}" required></label>
                                 <label>{{ __('messages.module') }}
                                     <select name="module">
                                         @foreach(\App\Models\ApprovalWorkflow::modules() as $mod)

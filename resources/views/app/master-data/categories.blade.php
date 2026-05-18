@@ -61,14 +61,14 @@
                             @csrf @method('PATCH')
                             <div class="form-grid two">
                                 <label><span class="label-cap">{{ __('messages.category_name') }} <span class="req">*</span></span>
-                                    <input name="name" value="{{ $category->name }}" required>
+                                    <input name="name" value="{{ $category->name }}" placeholder="{{ __('messages.category_name') }}" required>
                                 </label>
                                 <label><span class="label-cap">{{ __('messages.code') }}</span>
-                                    <input name="code" value="{{ $category->code }}">
+                                    <input name="code" value="{{ $category->code }}" placeholder="CAT-01">
                                 </label>
                             </div>
                             <label><span class="label-cap">{{ __('messages.description') }}</span>
-                                <input name="description" value="{{ $category->description }}">
+                                <input name="description" value="{{ $category->description }}" placeholder="{{ __('messages.description') }}">
                             </label>
                             <div class="form-row-spread">
                                 <label class="check-row"><input name="is_active" type="checkbox" value="1" {{ $category->is_active ? 'checked' : '' }}> {{ __('messages.active') }}</label>
@@ -96,14 +96,14 @@
             @csrf
             <div class="form-grid two">
                 <label><span class="label-cap">{{ __('messages.category_name') }} <span class="req">*</span></span>
-                    <input name="name" value="{{ old('name') }}" required>
+                    <input name="name" value="{{ old('name') }}" placeholder="{{ __('messages.category_name') }}" required>
                 </label>
                 <label><span class="label-cap">{{ __('messages.code') }}</span>
                     <input name="code" value="{{ old('code') }}" placeholder="CAT-01">
                 </label>
             </div>
             <label><span class="label-cap">{{ __('messages.description') }}</span>
-                <input name="description" value="{{ old('description') }}">
+                <input name="description" value="{{ old('description') }}" placeholder="{{ __('messages.description') }}">
             </label>
             <div class="modal-actions">
                 <a href="#" class="secondary-button">{{ __('messages.cancel') }}</a>

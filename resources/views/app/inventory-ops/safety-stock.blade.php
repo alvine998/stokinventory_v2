@@ -57,7 +57,7 @@
                             @csrf @method('PATCH')
                             <div class="form-grid two">
                                 <label><span class="label-cap">{{ __('messages.safety_stock') }} <span class="req">*</span></span>
-                                    <input type="number" name="safety_stock" value="{{ $product->safety_stock }}" min="0" required>
+                                    <input type="number" name="safety_stock" value="{{ $product->safety_stock }}" min="0" placeholder="0" required>
                                 </label>
                             </div>
                             <div style="display:flex;gap:8px">

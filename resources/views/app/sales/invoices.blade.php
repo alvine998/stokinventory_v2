@@ -102,7 +102,7 @@
         <form method="POST" action="{{ route('sales.invoices.update', $inv) }}" class="modal-body">
             @csrf @method('PATCH')
             <label><span class="label-cap">{{ __('messages.paid_amount') }}</span>
-                <input type="number" name="paid_amount" min="0" step="0.01" value="{{ $inv->paid_amount }}" required>
+                <input type="number" name="paid_amount" min="0" step="0.01" value="{{ $inv->paid_amount }}" placeholder="0" required>
             </label>
             <label style="margin-top:12px"><span class="label-cap">{{ __('messages.notes') }}</span>
                 <textarea name="notes" rows="2">{{ $inv->notes }}</textarea>
@@ -145,10 +145,10 @@
                     </select>
                 </label>
                 <label><span class="label-cap">{{ __('messages.amount') }} <span class="req">*</span></span>
-                    <input type="number" name="amount" min="0.01" step="0.01" required>
+                    <input type="number" name="amount" min="0.01" step="0.01" placeholder="0" required>
                 </label>
                 <label><span class="label-cap">{{ __('messages.paid_amount') }}</span>
-                    <input type="number" name="paid_amount" min="0" step="0.01" value="0">
+                    <input type="number" name="paid_amount" min="0" step="0.01" value="0" placeholder="0">
                 </label>
                 <label><span class="label-cap">{{ __('messages.due_date') }}</span>
                     <input type="date" name="due_at">

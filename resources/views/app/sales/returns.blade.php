@@ -124,7 +124,7 @@
                     <input type="datetime-local" name="returned_at">
                 </label>
                 <label><span class="label-cap">{{ __('messages.reason') }}</span>
-                    <input type="text" name="reason" maxlength="255">
+                    <input type="text" name="reason" maxlength="255" placeholder="{{ __('messages.reason') }}">
                 </label>
                 <label style="grid-column:span 2"><span class="label-cap">{{ __('messages.notes') }}</span>
                     <textarea name="notes" rows="2"></textarea>

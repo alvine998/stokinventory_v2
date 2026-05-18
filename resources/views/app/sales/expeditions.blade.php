@@ -69,10 +69,10 @@
                             @csrf @method('PATCH')
                             <div class="form-grid two">
                                 <label><span class="label-cap">{{ __('messages.name') }} <span class="req">*</span></span>
-                                    <input type="text" name="name" value="{{ $exp->name }}" required>
+                                    <input type="text" name="name" value="{{ $exp->name }}" placeholder="{{ __('messages.name') }}" required>
                                 </label>
                                 <label><span class="label-cap">{{ __('messages.code') }}</span>
-                                    <input type="text" name="code" value="{{ $exp->code }}">
+                                    <input type="text" name="code" value="{{ $exp->code }}" placeholder="JNE">
                                 </label>
                                 <label style="grid-column:span 2"><span class="label-cap">{{ __('messages.tracking_url') }}</span>
                                     <input type="url" name="tracking_url_template" value="{{ $exp->tracking_url_template }}" placeholder="https://cek.jne.co.id/tracking?no={tracking_no}">

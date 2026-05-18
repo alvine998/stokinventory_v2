@@ -181,7 +181,7 @@
                     </select>
                 </label>
                 <label><span class="label-cap">{{ __('messages.tracking_no') }}</span>
-                    <input type="text" name="tracking_no" maxlength="100">
+                    <input type="text" name="tracking_no" maxlength="100" placeholder="{{ __('messages.tracking_no') }}">
                 </label>
                 <label><span class="label-cap">{{ __('messages.shipped_at') }}</span>
                     <input type="datetime-local" name="shipped_at">

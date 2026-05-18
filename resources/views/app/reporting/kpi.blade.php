@@ -133,7 +133,7 @@
                     </select>
                 </label>
                 <label style="grid-column:span 2"><span class="label-cap">{{ __('messages.target_value') }} <span class="req">*</span></span>
-                    <input type="number" name="target_value" min="0" step="1" required>
+                    <input type="number" name="target_value" min="0" step="1" placeholder="0" required>
                 </label>
             </div>
             <div class="modal-footer">
@@ -283,7 +283,7 @@ new Chart(document.getElementById('revenueTrend'), {
                     </select>
                 </label>
                 <label style="grid-column:span 2"><span class="label-cap">{{ __('messages.target_value') }} <span class="req">*</span></span>
-                    <input type="number" name="target_value" min="0" step="1" required>
+                    <input type="number" name="target_value" min="0" step="1" placeholder="0" required>
                 </label>
             </div>
             <div class="modal-footer">

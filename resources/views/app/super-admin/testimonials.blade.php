@@ -80,9 +80,9 @@
                             @csrf
                             @method('PATCH')
                             <div class="form-grid two">
-                                <label>{{ __('messages.name') }}<input name="name" value="{{ $testimonial->name }}" required></label>
-                                <label>{{ __('messages.role') }}<input name="role" value="{{ $testimonial->role }}"></label>
-                                <label>{{ __('messages.company') }}<input name="company" value="{{ $testimonial->company }}"></label>
+                                <label>{{ __('messages.name') }}<input name="name" value="{{ $testimonial->name }}" placeholder="{{ __('messages.full_name') }}" required></label>
+                                <label>{{ __('messages.role') }}<input name="role" value="{{ $testimonial->role }}" placeholder="{{ __('messages.job_title') }}"></label>
+                                <label>{{ __('messages.company') }}<input name="company" value="{{ $testimonial->company }}" placeholder="{{ __('messages.company_name') }}"></label>
                                 <label>{{ __('messages.rating') }}
                                     <select name="rating">
                                         @foreach (range(5, 1) as $r)
@@ -90,7 +90,7 @@
                                         @endforeach
                                     </select>
                                 </label>
-                                <label>{{ __('messages.sort_order') }}<input name="sort_order" type="number" min="0" value="{{ $testimonial->sort_order }}"></label>
+                                <label>{{ __('messages.sort_order') }}<input name="sort_order" type="number" min="0" value="{{ $testimonial->sort_order }}" placeholder="0"></label>
                                 <label>{{ __('messages.avatar') }}<input name="avatar" type="file" accept="image/*"></label>
                             </div>
                             <label>{{ __('messages.testimonial_body') }}<textarea name="body" rows="3" required>{{ $testimonial->body }}</textarea></label>
