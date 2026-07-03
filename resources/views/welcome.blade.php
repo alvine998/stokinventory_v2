@@ -36,6 +36,9 @@
 </section>
 @endif
 
+<div class="three-canvas-wrap">
+    <canvas id="three-canvas"></canvas>
+</div>
 <section class="hero">
     <div class="hero-copy">
         <div class="hero-eyebrow">
@@ -69,9 +72,9 @@
             <div><strong>31</strong><small>{{ __('messages.active_locations') }}</small></div>
         </div>
         <div class="hero-activity">
-            <div class="hero-activity-item in"><i class="fa-solid fa-arrow-down"></i><span>Barang masuk</span><strong>+240</strong></div>
-            <div class="hero-activity-item out"><i class="fa-solid fa-arrow-up"></i><span>Barang keluar</span><strong>-88</strong></div>
-            <div class="hero-activity-item transfer"><i class="fa-solid fa-right-left"></i><span>Transfer</span><strong>12</strong></div>
+            <div class="hero-activity-item in"><i class="fa-solid fa-arrow-down"></i><span>{{ __('messages.stock_in') }}</span><strong>+240</strong></div>
+            <div class="hero-activity-item out"><i class="fa-solid fa-arrow-up"></i><span>{{ __('messages.stock_out') }}</span><strong>-88</strong></div>
+            <div class="hero-activity-item transfer"><i class="fa-solid fa-right-left"></i><span>{{ __('messages.transfer') }}</span><strong>12</strong></div>
         </div>
         <div class="flow-line"><i class="fa-solid fa-box"></i><span></span><i class="fa-solid fa-warehouse"></i><span></span><i class="fa-solid fa-receipt"></i></div>
     </div>
@@ -261,26 +264,26 @@
             <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
                 <i class="fa-brands fa-whatsapp" style="color:#fff;font-size:20px"></i>
             </div>
-            <div style="flex:1">
-                <p style="color:#fff;font-weight:700;margin:0;font-size:14px">StokInventory Support</p>
-                <p style="color:rgba(255,255,255,.8);margin:0;font-size:11px">
-                    <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#8de48d;margin-right:4px;vertical-align:middle"></span>Online
-                </p>
+                <div style="flex:1">
+                    <p style="color:#fff;font-weight:700;margin:0;font-size:14px">{{ __('messages.wa_support_title') }}</p>
+                    <p style="color:rgba(255,255,255,.8);margin:0;font-size:11px">
+                        <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#8de48d;margin-right:4px;vertical-align:middle"></span>{{ __('messages.wa_online') }}
+                    </p>
             </div>
             <button onclick="toggleWa()" style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,.8);font-size:20px;line-height:1;padding:2px" aria-label="Close">&times;</button>
         </div>
         <div style="padding:16px;background:#e5ddd5">
             <div style="background:#fff;border-radius:10px 10px 10px 2px;padding:12px 14px;font-size:13px;line-height:1.55;box-shadow:0 1px 3px rgba(0,0,0,.1)">
-                <p style="margin:0 0 5px;font-weight:700;font-size:11px;color:#25d366">Support Team</p>
-                <p style="margin:0;color:#1a2e3b">Halo! 👋<br>Ada yang bisa kami bantu? Chat langsung di WhatsApp ya.</p>
+                <p style="margin:0 0 5px;font-weight:700;font-size:11px;color:#25d366">{{ __('messages.wa_support_team') }}</p>
+                <p style="margin:0;color:#1a2e3b">{{ __('messages.wa_greeting') }}</p>
             </div>
-            <p style="margin:5px 0 0;font-size:10px;color:#888;text-align:right">Balas dalam hitungan menit</p>
+            <p style="margin:5px 0 0;font-size:10px;color:#888;text-align:right">{{ __('messages.wa_reply_time') }}</p>
         </div>
         <div style="padding:12px 16px;background:#fff;border-top:1px solid #eef2f4">
             <a href="{{ $waLink }}" target="_blank" rel="noopener noreferrer"
                style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:#fff;padding:11px 16px;border-radius:10px;font-weight:700;font-size:13px;text-decoration:none">
                 <i class="fa-brands fa-whatsapp" style="font-size:16px"></i>
-                Mulai Chat WhatsApp
+                {{ __('messages.wa_start_chat') }}
             </a>
         </div>
     </div>

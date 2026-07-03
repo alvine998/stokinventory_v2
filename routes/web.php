@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\App\ExpiredController;
 use App\Http\Controllers\App\CompanySettingsController;
 use App\Http\Controllers\App\BillingController;
 use App\Http\Controllers\App\DashboardController;
@@ -39,8 +40,10 @@ Route::get('/locale/{locale}', function (string $locale) {
 })->name('locale.switch');
 
 Route::get('/', [DashboardController::class, 'landing'])->name('landing');
-Route::get('/order/{package:slug}', [OrderController::class, 'show'])->name('order.show');
-Route::post('/order/{package:slug}', [OrderController::class, 'store'])->name('order.store');
+Route::middleware('throttle:order')->group(function () {
+    Route::get('/order/{package:slug}', [OrderController::class, 'show'])->name('order.show');
+    Route::post('/order/{package:slug}', [OrderController::class, 'store'])->name('order.store');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -57,7 +60,9 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-Route::middleware('auth')->group(function () {
+Route::get('/expired', [ExpiredController::class, 'show'])->middleware('auth')->name('expired');
+
+Route::middleware(['auth', 'subscription.active'])->group(function () {
     Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding.show');
     Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
 

@@ -931,4 +931,21 @@ return [
     'logins'                => 'Logins',
     'unique_ips'            => 'Unique IPs',
     'success'               => 'Success',
+
+    'stock_in' => 'Stock in',
+    'stock_out' => 'Stock out',
+    'transfer' => 'Transfer',
+    'wa_support_title' => 'StokInventory Support',
+    'wa_online' => 'Online',
+    'wa_support_team' => 'Support Team',
+    'wa_greeting' => 'Hello! 👋<br>Need help? Chat with us directly on WhatsApp.',
+    'wa_reply_time' => 'We reply within minutes',
+    'wa_start_chat' => 'Start WhatsApp Chat',
+
+    'trial_expired_title' => 'Your trial has expired',
+    'trial_expired_body' => 'Your free trial period has ended. Subscribe to a package to continue using StokInventory and keep your data safe.',
+    'days_until_deletion' => 'days until data deletion',
+    'trial_deletion_warning' => 'If you do not subscribe within 7 days, all your business data will be permanently deleted.',
+    'trial_deletion_imminent' => 'Your data is scheduled for deletion today. Subscribe now to keep your data.',
+    'back_to_landing' => 'Back to landing',
 ];

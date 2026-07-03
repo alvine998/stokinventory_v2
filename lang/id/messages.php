@@ -929,4 +929,22 @@ return [
     'records'               => 'data',
     'logins'                => 'Login',
     'unique_ips'            => 'IP Unik',
-    'success'               => 'Berhasil',];
+    'success'               => 'Berhasil',
+
+    'stock_in' => 'Barang masuk',
+    'stock_out' => 'Barang keluar',
+    'transfer' => 'Transfer',
+    'wa_support_title' => 'StokInventory Support',
+    'wa_online' => 'Online',
+    'wa_support_team' => 'Tim Support',
+    'wa_greeting' => 'Halo! 👋<br>Ada yang bisa kami bantu? Chat langsung di WhatsApp ya.',
+    'wa_reply_time' => 'Balas dalam hitungan menit',
+    'wa_start_chat' => 'Mulai Chat WhatsApp',
+
+    'trial_expired_title' => 'Masa trial Anda telah berakhir',
+    'trial_expired_body' => 'Masa percobaan gratis Anda telah habis. Berlangganan paket untuk terus menggunakan StokInventory dan menjaga data Anda tetap aman.',
+    'days_until_deletion' => 'hari sebelum data dihapus',
+    'trial_deletion_warning' => 'Jika Anda tidak berlangganan dalam 7 hari, seluruh data bisnis Anda akan dihapus secara permanen.',
+    'trial_deletion_imminent' => 'Data Anda dijadwalkan untuk dihapus hari ini. Berlangganan sekarang untuk menyimpan data Anda.',
+    'back_to_landing' => 'Kembali ke landing',
+];

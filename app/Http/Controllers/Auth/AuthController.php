@@ -84,6 +84,15 @@ class AuthController extends Controller
             return redirect()->intended(route('super-admin.dashboard'));
         }
 
+        $business = Auth::user()->business;
+        if ($business && $business->isTrialExpired()) {
+            if (! $business->trial_expired_at) {
+                $business->update(['trial_expired_at' => now()]);
+            }
+
+            return redirect()->route('expired');
+        }
+
         return redirect()->intended(route(Auth::user()->business?->onboarding_completed_at ? 'dashboard' : 'onboarding.show'));
     }
 
